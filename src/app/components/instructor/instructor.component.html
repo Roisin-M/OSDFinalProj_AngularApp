@@ -1,0 +1,10 @@
+<p>instructor works!</p>
+<ol>
+    @for (u of instructors; track u.id){
+        <li>
+            Name : {{u.name}}
+            Yoga Specialities : {{u.yogaSpecialities}}
+            Email : {{u.email}}
+        </li>
+    }
+</ol>
