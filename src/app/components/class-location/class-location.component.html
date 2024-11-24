@@ -1,4 +1,11 @@
-<p>class-location works!</p>
+<h1>Our Class Locations</h1>
+
+<!-- New Class Location Button -->
+<button class="btn btn-primary mb-3" routerLink="/createclasslocation">
+    New Class Location
+  </button>
+  
+<!-- Display list of class Locations -->
 <ol>
     @for (u of classLocations; track u.id){
         <li>

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { ClassLocationsService } from '../../services/classLocations/class-locations.service';
 import { ClassLocation } from '../../interfaces/class-location';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-class-location',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './class-location.component.html',
   styleUrl: './class-location.component.css'
 })
@@ -15,6 +16,7 @@ export class ClassLocationComponent {
 
   //constuctor with injection
   constructor(private classLocationService: ClassLocationsService){}
+  
   //ngonit method
   ngOnInit():void{
     this.classLocationService.getClassLocations().subscribe({

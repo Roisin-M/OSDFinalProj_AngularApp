@@ -1,0 +1,31 @@
+<h1>Add A New Instructor To The Studio</h1>
+
+<form [formGroup]="createInstructorForm" (ngSubmit)="onSubmit()">
+    <!--Name-->
+    <div>
+        <label for="name">Name</label>
+        <input id="name" type="text" formControlName="name">
+    </div>
+    <!--Email-->
+    <div>
+        <label for="email">Email</label>
+        <input for="email" type="email" formControlName="email">
+    </div>
+    <!--Yoga Specialities-->
+    <div formArrayName="yogaSpecialities">
+        <h3>Yoga Specialities</h3>
+        <div>
+            @for (specialityControl of yogaSpecialitiesArray.controls; track specialityControl; let i = $index){
+                <label for="yogaSpecialities-{{i}}">Select Speciality {{i+1}}:</label>
+                <select id="yogaSpecialities-{{i}}" [formControlName]="i">
+                @for(speciality of yogaSpecialities; track speciality){
+                    <option [value]="speciality">{{speciality}}</option>
+                }
+                </select>
+                <button type="button" (click)="removeYogaSpeciality(i)">Remove</button>
+            }
+        </div>
+    </div>
+    <button type="button" (click)="addYogaSpeciality()">Add Yoga Speciality</button>
+    <button type="submit">Create</button>
+</form>

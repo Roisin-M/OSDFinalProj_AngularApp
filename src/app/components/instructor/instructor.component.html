@@ -1,4 +1,11 @@
-<p>instructor works!</p>
+<h1>Our Instructors</h1>
+
+<!-- New Instructor Button -->
+<button class="btn btn-primary mb-3" routerLink="/createinstructor">
+    New Instructor
+  </button>
+  
+<!-- Display list of instructors -->
 <ol>
     @for (u of instructors; track u.id){
         <li>
