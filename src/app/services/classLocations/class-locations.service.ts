@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ClassLocationComponent } from '../../components/class-location/class-location.component';
 import { ClassLocation } from '../../interfaces/class-location';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 export class ClassLocationsService {
 
   constructor(private http: HttpClient  )   {  }
-  private classLocationUri =`http://localhost:3000/yoga-studio-management-api/v1/classlocations`;
+  private classLocationUri =`${environment.apiUri}/classlocations`;
 
   //get all classLocations Method
   public getClassLocations():Observable<ClassLocation[]>{

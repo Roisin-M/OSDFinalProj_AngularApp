@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { InstructorComponent } from '../../components/instructor/instructor.component';
 import { Observable } from 'rxjs';
 import { Instructor } from '../../interfaces/instructor';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Instructor } from '../../interfaces/instructor';
 export class InstructorsService {
 
   constructor(private http: HttpClient) { }
-  private instructorUri =`http://localhost:3000/yoga-studio-management-api/v1/instructors`;
+  private instructorUri = `${environment.apiUri}/instructors`
 
   //get all instructors method
   public getInstructors(): Observable<Instructor[]>{
