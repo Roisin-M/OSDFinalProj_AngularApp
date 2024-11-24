@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ClassComponent } from '../../components/class/class.component';
 import { Class } from '../../interfaces/class';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 export class ClassesService {
 
   constructor(private http: HttpClient) { }
-  private classUri=`http://localhost:3000/yoga-studio-management-api/v1/classes`;
+  private classUri=`${environment.apiUri}/classes`;
   //get all classes Method
   public getClasses():Observable<Class[]>{
   console.log('get classes called');
