@@ -1,36 +1,48 @@
 <h1>Add A New Class Location To The Studio</h1>
 
 <form [formGroup]="createClassLocationForm" (ngSubmit)="onSubmit()">
-    <!--Name-->
-    <div>
-        <label for="name">Name</label>
-        <input id="name" type="text" formControlName="name">
-    </div>
-    <!--MaxCapacity-->
-    <div>
-        <label for="maxCapacity">Max Capacity</label>
-        <input id="maxCapacity" type="number" formControlName="maxCapacity">
-    </div>
-    <!--Location-->
-    <div>
-        <label for="location">Location</label>
-        <input id="location" type="text" formControlName="location">
-    </div>
-    <!--Class Format-->
+  <!--Name Form Field-->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name: </mat-label>
+    <input id="name" type="text" matInput formControlName="name">
+  </mat-form-field>
+    <!--MaxCapacity Form Field-->
+    <mat-form-field  appearance="outline" class="full-width">
+        <mat-label>Max Capacity: </mat-label>
+        <input matInput id="maxCapacity" type="number" formControlName="maxCapacity">
+    </mat-form-field>
+      <!--Location Form Field-->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Location: </mat-label>
+    <input id="location" type="text" matInput formControlName="location">
+  </mat-form-field>
+
+    <!--Class Format Section-->
+    <legend>Class formats</legend>
     <div formArrayName="classFormats">
-        <h3>Class Formats</h3>
-        <div>
-            @for(formatControl of classFormatsArray.controls; track formatControl; let i=$index){
-                <label for="classFormats-{{i}}">Select Class Format</label>
-                <select id="classFormats-{{i}}" [formControlName]="i">
-                    @for(classFormat of classFormats; track classFormat){
-                        <option [value]="classFormat">{{classFormat}}</option>
-                    }
-                </select>
-                <button type="button" (click)="removeClassFormat(i)">Remove</button>
-            }
-        </div>
+        @for (formatControl of classFormatsArray.controls; let i = $index; track formatControl) {
+            <fieldset [formGroupName]="i">
+              <legend>Class Format {{ i + 1 }}</legend>
+              
+              <!-- Class Format Dropdown -->
+              <mat-form-field appearance="outline" class="small-width">
+                <mat-label>Class Format</mat-label>
+                <mat-select [formControl]="formatControl">
+                  @for (classFormat of classFormats; track classFormat) {
+                    <mat-option [value]="classFormat">{{ classFormat }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+    
+              <!-- Remove Yoga Speciality Button -->
+              <button mat-raised-button color="warn" type="button" (click)="removeClassFormat(i)">
+                Remove
+              </button>
+            </fieldset>
+          }
     </div>
-    <button type="button" (click)="addClassFormat()">Add Class Format</button>
-    <button type="submit">Create</button>
+    <div>
+        <button mat-raised-button color="primary" type="button" (click)="addClassFormat()">Add Class Format</button>
+        <button  mat-raised-button color="accent" type="submit">Create</button>
+    </div>
 </form>
