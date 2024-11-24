@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl,
+   FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ClassFormat } from '../../../../interfaces/class-location';
 //material imports
 import {MatButtonModule} from '@angular/material/button';
@@ -26,10 +27,13 @@ export class CreateClassLocationComponent {
   constructor(private formBuilder: FormBuilder){
     //initialise the form in the constructor
     this.createClassLocationForm=this.formBuilder.group({
-        name: new FormControl(''),
-        maxCapacity: new FormControl(''),
-        location: new FormControl(''),
-        classFormats: this.formBuilder.array([]),
+        name: new FormControl('', [Validators.required, 
+          Validators.minLength(3)]),
+        maxCapacity: new FormControl('', [Validators.required,
+          Validators.min(5)]),
+        location: new FormControl('',[Validators.required, 
+          Validators.minLength(5)]),
+        classFormats: this.formBuilder.array([], Validators.required),
     });
   }
   //getter to get the formArray -> explicity cast as type FormControl
@@ -39,8 +43,19 @@ export class CreateClassLocationComponent {
   
   //add a Class Format as form control
   addClassFormat():void{
-    const formatControl = this.formBuilder.control('');
+    const formatControl = this.formBuilder.control('', Validators.required);
     this.classFormatsArray.push(formatControl);
+  }
+
+  //getters for validation
+  get name(){
+    return this.createClassLocationForm.get('name');
+  }
+  get maxCapacity(){
+    return this.createClassLocationForm.get('maxCapacity');
+  }
+  get location(){
+    return this.createClassLocationForm.get('location');
   }
 
   //remove a Class Format
