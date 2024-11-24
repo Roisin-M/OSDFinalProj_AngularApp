@@ -3,6 +3,7 @@ import { InstructorComponent } from './components/instructor/instructor.componen
 import { ClassLocationComponent}  from './components/class-location/class-location.component';
 import { ClassComponent } from './components/class/class.component';
 import { HomeComponent } from './components/home/home/home.component';
+import { CreateInstructorComponent } from './components/form-components/createInstructor/create-instructor/create-instructor.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -10,4 +11,5 @@ export const routes: Routes = [
     {path: 'instructors', component: InstructorComponent },
     {path: 'classlocations', component: ClassLocationComponent},
     {path: 'classes', component:ClassComponent},
+    {path: 'createinstructor', component:CreateInstructorComponent}
 ];

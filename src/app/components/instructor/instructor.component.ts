@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { InstructorsService } from '../../services/instructors/instructors.service';
 import { Instructor } from '../../interfaces/instructor';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-instructor',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './instructor.component.html',
   styleUrl: './instructor.component.css'
 })
