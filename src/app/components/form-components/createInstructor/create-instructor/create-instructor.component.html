@@ -1,31 +1,73 @@
 <h1>Add A New Instructor To The Studio</h1>
 
-<form [formGroup]="createInstructorForm" (ngSubmit)="onSubmit()">
-    <!--Name-->
-    <div>
-        <label for="name">Name</label>
-        <input id="name" type="text" formControlName="name">
-    </div>
-    <!--Email-->
-    <div>
-        <label for="email">Email</label>
-        <input for="email" type="email" formControlName="email">
-    </div>
-    <!--Yoga Specialities-->
+<form [formGroup]="createInstructorForm" (ngSubmit)="onSubmit()" >
+  <!--Name Form Field-->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name: </mat-label>
+    <input id="name" type="text" matInput formControlName="name">
+    @if(!name?.value){
+        <mat-hint>Must be at least 3 chars</mat-hint> 
+    }
+    @if (name?.hasError('required') ){
+        <mat-error>Name is required </mat-error>
+    }
+    @else if (name?.hasError('minlength')) {
+        <mat-error>Name Must be at least 3 chars </mat-error>
+    }
+
+  </mat-form-field>
+  
+  <!--Email Form Field-->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email: </mat-label>
+    <input id="email" type="email" matInput formControlName="email">
+    @if(!email?.value){
+        <mat-hint>Must be a valid email address</mat-hint>
+    }
+    @if(email?.hasError('required')){
+        <mat-error>Email is required</mat-error>
+    }
+    @else if (email?.hasError('email')) 
+    {
+        <mat-error>Email must be a valid email format</mat-error>
+    }
+  </mat-form-field>
+
+ <!-- Yoga Specialities Section -->
+ <fieldset>
+    <legend>Yoga Specialities</legend>
+     <!-- Section Validation Message -->
+  @if (yogaSpecialitiesArray.invalid && !yogaSpecialitiesArray.touched) {
+    <p class="error-message">At least one Yoga Speciality is required.</p>
+  }
     <div formArrayName="yogaSpecialities">
-        <h3>Yoga Specialities</h3>
-        <div>
-            @for (specialityControl of yogaSpecialitiesArray.controls; track specialityControl; let i = $index){
-                <label for="yogaSpecialities-{{i}}">Select Speciality {{i+1}}:</label>
-                <select id="yogaSpecialities-{{i}}" [formControlName]="i">
-                @for(speciality of yogaSpecialities; track speciality){
-                    <option [value]="speciality">{{speciality}}</option>
-                }
-                </select>
-                <button type="button" (click)="removeYogaSpeciality(i)">Remove</button>
-            }
-        </div>
+      @for (specialityControl of yogaSpecialitiesArray.controls; let i = $index; track specialityControl) {
+        <fieldset [formGroupName]="i">
+          <legend>Yoga Speciality {{ i + 1 }}</legend>
+          <!-- Speciality Dropdown -->
+          <mat-form-field appearance="outline" class="small-width">
+            <mat-label>Yoga Speciality</mat-label>
+            <mat-select [formControl]="specialityControl">
+              @for (speciality of yogaSpecialities; track speciality) {
+                <mat-option [value]="speciality">{{ speciality }}</mat-option>
+              }
+            </mat-select>
+            @if (specialityControl?.hasError('required')) {
+                <mat-error>Speciality is required</mat-error>
+              }
+          </mat-form-field>
+
+          <!-- Remove Yoga Speciality Button -->
+          <button mat-raised-button color="warn" type="button" (click)="removeYogaSpeciality(i)">
+            Remove
+          </button>
+        </fieldset>
+      }
     </div>
-    <button type="button" (click)="addYogaSpeciality()">Add Yoga Speciality</button>
-    <button type="submit">Create</button>
+    <button mat-raised-button color="primary" type="button" (click)="addYogaSpeciality()">Add Yoga Speciality</button>
+  </fieldset>
+  <!--Buttons-->
+  <div>
+    <button mat-raised-button color="accent" type="submit" [disabled]="createInstructorForm.invalid" >Create</button>
+  </div>
 </form>
