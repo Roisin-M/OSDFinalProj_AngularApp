@@ -72,4 +72,21 @@ export class InstructorDetailsComponent {
       })
     }
   }
+
+  // updateInstructor(updatedInstructor: Instructor): void {
+  //   if (this.id) {
+  //     this.instructorsService.updateInstructor(this.id, updatedInstructor).subscribe({
+  //       next: () => {
+  //         this.successMessage = 'Instructor updated successfully!';
+  //         this.showForm = false; // Hide the form after updating
+  //         setTimeout(() => {
+  //           this.successMessage = ''; // Clear the message after 2 seconds
+  //         }, 2000);
+  //       },
+  //       error: (err: Error) => {
+  //         console.log('Error updating instructor:', err.message);
+  //       },
+  //     });
+  //   }
+  // }
 }
