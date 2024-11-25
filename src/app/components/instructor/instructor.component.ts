@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { InstructorsService } from '../../services/instructors/instructors.service';
 import { Instructor } from '../../interfaces/instructor';
 import { RouterLink } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-instructor',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, MatCardModule],
   templateUrl: './instructor.component.html',
   styleUrl: './instructor.component.css'
 })

@@ -1,6 +1,6 @@
 import { Component,inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Instructor } from '../../../../interfaces/instructor';
 import { InstructorsService } from '../../../../services/instructors/instructors.service';
 import { AsyncPipe, DecimalPipe, TitleCasePipe } from '@angular/common';
@@ -12,7 +12,7 @@ import { MatButton, MatButtonModule } from '@angular/material/button'
   selector: 'app-instructor-details',
   standalone: true,
   imports: [AsyncPipe, CreateInstructorComponent, 
-    MatCardModule, DecimalPipe, TitleCasePipe, MatButton],
+    MatCardModule, MatButton],
   templateUrl: './instructor-details.component.html',
   styleUrl: './instructor-details.component.css'
 })
@@ -31,8 +31,13 @@ export class InstructorDetailsComponent {
   //get by id from service
   ngOnInit():void{
     this.id=this.route.snapshot.paramMap.get('id');
+    console.log('fetched ID: ', this.id);//debugging
     if(this.id){
-      this.instructor$ = this.instructorsService.getInstructor(this.id)
+      console.log('Fetching instructor by ID:', this.id);
+      this.instructor$ = this.instructorsService.getInstructor(this.id).pipe(
+        tap((instructor) => console.log('Fetched instructor:', instructor)) // Debug response
+      );
+      console.log('Observable assigned:', this.instructor$);
     }
   }
 
@@ -46,7 +51,7 @@ export class InstructorDetailsComponent {
     if(this.id){
       this.instructorsService.deleteInstructor(this.id)
       .subscribe({
-        next: response=>{
+        next: response =>{
           this.router.navigateByUrl('/instructors')},
           error:(err:Error)=>{
             console.log(err.message);

@@ -26,6 +26,6 @@ export interface Instructor {
     name: string;
     yogaSpecialities :YogaSpeciality[];
     email:string;
-    id?: string; // MongoDB ObjectId represented as a string
+    _id: any; // MongoDB ObjectId represented as a string
     classIds?: string[];
 }

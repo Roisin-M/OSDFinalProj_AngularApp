@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, 
   FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Instructor, YogaSpeciality } from '../../../../interfaces/instructor';
@@ -21,6 +21,9 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './create-instructor.component.css'
 })
 export class CreateInstructorComponent {
+
+  //to use with details
+  @Input() instructor?: Instructor;
 
   createInstructorForm: FormGroup=new FormGroup({});
 
@@ -78,7 +81,7 @@ export class CreateInstructorComponent {
     createNew(formValues:Instructor){
       this.instructorsService.addInstructor({...formValues})
       .subscribe({
-        next: response=>{
+        next: response =>{
           this.router.navigateByUrl('/instructors')},
           error: (err:Error)=>{
             console.log(err.message);
