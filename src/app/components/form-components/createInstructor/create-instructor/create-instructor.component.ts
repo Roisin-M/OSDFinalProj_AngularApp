@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, 
   FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { YogaSpeciality } from '../../../../interfaces/instructor';
+import { Instructor, YogaSpeciality } from '../../../../interfaces/instructor';
+import { InstructorsService } from '../../../../services/instructors/instructors.service';
+import { Router } from '@angular/router';
 //material imports
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -19,12 +21,18 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './create-instructor.component.css'
 })
 export class CreateInstructorComponent {
-  createInstructorForm: FormGroup;
+
+  createInstructorForm: FormGroup=new FormGroup({});
+
   //Extract Yoga Speciality enum values
   yogaSpecialities = Object.values(YogaSpeciality);
 
-  constructor(private formBuilder: FormBuilder){
-    //initialise the form in the constructor
+  constructor(private formBuilder: FormBuilder,
+    private instructorsService:InstructorsService,
+    private router:Router){}
+
+    ngOnInit():void{
+      //initialise the form
     this.createInstructorForm = this.formBuilder.group({
       name: new FormControl('',[Validators.required,
         Validators.minLength(3)]),
@@ -32,7 +40,7 @@ export class CreateInstructorComponent {
         Validators.required]),
       yogaSpecialities: this.formBuilder.array([], Validators.required)
     });
-  }
+    }
  
     // explicitly casts the controls to FormControl[]
     get yogaSpecialitiesArray(): FormArray<FormControl> {
@@ -62,5 +70,21 @@ export class CreateInstructorComponent {
     onSubmit(){
       console.log('form submitted with ');
       console.table(this.createInstructorForm.value);
+      this.createNew(this.createInstructorForm.value);
+      
     }
+
+    //submit to instructor service
+    createNew(formValues:Instructor){
+      this.instructorsService.addInstructor({...formValues})
+      .subscribe({
+        next: response=>{
+          this.router.navigateByUrl('/instructors')},
+          error: (err:Error)=>{
+            console.log(err.message);
+            //this.message = err
+          }
+      })
+    }
+
 }
