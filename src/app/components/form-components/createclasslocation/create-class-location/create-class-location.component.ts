@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl,
    FormBuilder, FormArray, Validators } from '@angular/forms';
-import { ClassFormat } from '../../../../interfaces/class-location';
+import { ClassFormat, ClassLocation } from '../../../../interfaces/class-location';
+import { ClassLocationsService } from '../../../../services/classLocations/class-locations.service';
+import { Router } from '@angular/router';
 //material imports
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -20,22 +22,29 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './create-class-location.component.css'
 })
 export class CreateClassLocationComponent {
-  createClassLocationForm: FormGroup;
+
+  createClassLocationForm: FormGroup= new FormGroup({});
+
   //extract class format enum values
   classFormats=Object.values(ClassFormat);
 
-  constructor(private formBuilder: FormBuilder){
-    //initialise the form in the constructor
-    this.createClassLocationForm=this.formBuilder.group({
-        name: new FormControl('', [Validators.required, 
-          Validators.minLength(3)]),
-        maxCapacity: new FormControl('', [Validators.required,
-          Validators.min(5)]),
-        location: new FormControl('',[Validators.required, 
-          Validators.minLength(5)]),
-        classFormats: this.formBuilder.array([], Validators.required),
-    });
+  constructor(private formBuilder: FormBuilder,
+    private classLocationsService:ClassLocationsService,
+    private router:Router){}
+
+  ngOnInit():void{
+     //initialise the form in the constructor
+     this.createClassLocationForm=this.formBuilder.group({
+      name: new FormControl('', [Validators.required, 
+        Validators.minLength(3)]),
+      maxCapacity: new FormControl('', [Validators.required,
+        Validators.min(5)]),
+      location: new FormControl('',[Validators.required, 
+        Validators.minLength(5)]),
+      classFormats: this.formBuilder.array([], Validators.required),
+  });
   }
+
   //getter to get the formArray -> explicity cast as type FormControl
   get classFormatsArray():FormArray<FormControl>{
     return this.createClassLocationForm.get('classFormats') as FormArray<FormControl>;
@@ -66,7 +75,20 @@ export class CreateClassLocationComponent {
   onSubmit(){
     console.log('form submitted with');
     console.log(this.createClassLocationForm.value);
+    this.createNew(this.createClassLocationForm.value);
   }
 
+  //submit to class location service
+  createNew(formValues:ClassLocation){
+    this.classLocationsService.addClasslocation({...formValues})
+    .subscribe({
+      next: response=>{
+        this.router.navigateByUrl('/classlocations')},
+        error:(err:Error)=>{
+          console.log(err.message);
+          //this.message=err
+        }
+    })
+  }
 
 }
