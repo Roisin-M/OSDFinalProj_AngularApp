@@ -25,10 +25,10 @@ export class ClassLocationsService {
   }
 
   //get class location by id
-  public getClasslocation(id:string):Observable<ClassLocation>{
+  public getClasslocation(id:string):Observable<{classLocation:ClassLocation}>{
     let uri=`${this.classLocationUri}/${id}`
-
-    return this.http.get<ClassLocation>(uri)
+    console.log('Fetching instructor by ID:', uri);
+    return this.http.get<{classLocation:ClassLocation}>(uri)
     .pipe(
       retry(3),
       catchError(this.handleError)

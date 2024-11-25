@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl,
    FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ClassFormat, ClassLocation } from '../../../../interfaces/class-location';
@@ -24,6 +24,10 @@ import { MatSelectModule } from '@angular/material/select';
 export class CreateClassLocationComponent {
 
   createClassLocationForm: FormGroup= new FormGroup({});
+  successMessage: string='';
+
+  //to use with details
+  @Input() classLocation?: ClassLocation;
 
   //extract class format enum values
   classFormats=Object.values(ClassFormat);
@@ -83,7 +87,11 @@ export class CreateClassLocationComponent {
     this.classLocationsService.addClasslocation({...formValues})
     .subscribe({
       next: response=>{
-        this.router.navigateByUrl('/classlocations')},
+        this.successMessage = 'Class Location successfully Created';
+         setTimeout(() => {
+            this.router.navigateByUrl('/classlocations'); // Navigate after showing the message
+          }, 2000); // Display the message for 2 seconds
+        },
         error:(err:Error)=>{
           console.log(err.message);
           //this.message=err

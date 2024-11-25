@@ -24,6 +24,7 @@ export class CreateInstructorComponent {
 
   //to use with details
   @Input() instructor?: Instructor;
+  successMessage: string='';
 
   createInstructorForm: FormGroup=new FormGroup({});
 
@@ -74,7 +75,6 @@ export class CreateInstructorComponent {
       console.log('form submitted with ');
       console.table(this.createInstructorForm.value);
       this.createNew(this.createInstructorForm.value);
-      
     }
 
     //submit to instructor service
@@ -82,7 +82,11 @@ export class CreateInstructorComponent {
       this.instructorsService.addInstructor({...formValues})
       .subscribe({
         next: response =>{
-          this.router.navigateByUrl('/instructors')},
+          this.successMessage = 'Instructor successfully Created';
+          setTimeout(() => {
+            this.router.navigateByUrl('/instructors'); // Navigate after showing the message
+          }, 2000); // Display the message for 2 seconds
+        },
           error: (err:Error)=>{
             console.log(err.message);
             //this.message = err

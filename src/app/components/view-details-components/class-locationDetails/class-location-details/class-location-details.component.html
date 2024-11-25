@@ -1,1 +1,35 @@
-<p>class-location-details works!</p>
+<!-- Success message -->
+@if (successMessage) {
+    <p class="success-message">{{ successMessage }}</p>
+  }
+
+@if(classLocation){
+    @if(showForm){
+        <div>
+            <app-create-class-location [classLocation]="classLocation" ></app-create-class-location>
+        </div>
+    }
+    @else {
+        <mat-card>
+            <mat-card-header>Class Location Details</mat-card-header>
+            <mat-card-content>
+               <p>Name: {{ classLocation.name }}</p>
+                <p>Location: {{ classLocation.location }}</p>
+                <p>Max Capacity: {{ classLocation.maxCapacity }}</p>
+                <p>Class Formats Available: </p>
+                <ul>
+                    @for (format of classLocation.classFormats; track format; let i=$index){
+                        <li>{{ format}}</li>
+                    }
+                </ul>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="editClassLocation()" >Edit</button>
+                <button mat-flat-button color="error" (click)="deleteClassLocation()" >Delete </button>
+        </mat-card-actions>
+        </mat-card>
+    } 
+}
+@else {
+    <p>Loading class Location details...</p>
+}

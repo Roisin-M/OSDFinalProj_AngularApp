@@ -24,10 +24,10 @@ export class InstructorsService {
   }
 
   //takes an id and sends a get request for that individual response
-  getInstructor(id: string): Observable<Instructor>{
+  getInstructor(id: string): Observable<{instructor:Instructor}>{
     let uri=`${this.instructorUri}/${id}`;
     console.log('Fetching instructor by ID:', uri);
-    return this.http.get<Instructor>(uri)
+    return this.http.get<{instructor:Instructor}>(uri)
     .pipe(
       retry(3),
       catchError(this.handleError)
@@ -41,10 +41,7 @@ export class InstructorsService {
     return this.http.put<Instructor>(uri, instructor)
     .pipe(
       //catchError(this.handleError)
-      catchError(err =>{
-        console.error('Error fetching instructor:', err);
-      return throwError(() => new Error('Failed to fetch instructor data.'));
-      })
+      catchError(this.handleError)
     );
   }
 

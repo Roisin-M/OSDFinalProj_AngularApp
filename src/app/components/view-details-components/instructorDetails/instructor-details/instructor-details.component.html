@@ -1,6 +1,39 @@
-<p>instructor-details works!</p>
+<!-- Success message -->
+@if (successMessage) {
+    <p class="success-message">{{ successMessage }}</p>
+  }
 
-@if(instructor$ | async; as instructor){
+@if(instructor){
+    @if(showForm){
+        <div>
+            <app-create-instructor [instructor]="instructor" ></app-create-instructor>
+        </div>
+    }
+    @else {
+        <mat-card>
+            <mat-card-header>Instructor Details</mat-card-header>
+            <mat-card-content>
+               <p>Name: {{ instructor.name }}</p>
+                <p>Email: {{ instructor.email }}</p>
+                <p>Yoga Specialities: </p>
+                <ul>
+                    @for (speciality of instructor.yogaSpecialities; track speciality; let i=$index){
+                        <li>{{ speciality }}</li>
+                    }
+                </ul>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="editInstructor()" >Edit</button>
+                <button mat-flat-button color="error" (click)="deleteInstructor()" >Delete </button>
+        </mat-card-actions>
+        </mat-card>
+    } 
+}
+@else {
+    <p>Loading instructor details...</p>
+}
+
+<!-- @if(instructor$ | async; as instructor){
     @if(showForm){
         <div>
             <app-create-instructor [instructor]="instructor"></app-create-instructor>
@@ -27,4 +60,4 @@
 } 
 @else{
     <p>Loading instructor details...</p>
-}
+} -->

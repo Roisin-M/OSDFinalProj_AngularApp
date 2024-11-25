@@ -25,3 +25,10 @@ h1{
 legend{
     margin-left: 2%;
 }
+.success-message {
+    color: green;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 20px;
+    text-align: center;
+  }

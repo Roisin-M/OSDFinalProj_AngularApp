@@ -5,7 +5,7 @@ export enum ClassFormat{
 }
 
 export interface ClassLocation {
-    id? :string; // MongoDB ObjectId represented as a string
+    _id? :any; // MongoDB ObjectId represented as a string
     name: string;
     maxCapacity: number;
     location: string;
