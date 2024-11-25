@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, 
   FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Instructor, YogaSpeciality } from '../../../../interfaces/instructor';
@@ -21,6 +21,9 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './create-instructor.component.css'
 })
 export class CreateInstructorComponent {
+
+  @Input() instructor?: Instructor;
+  successMessage: string='';
 
   createInstructorForm: FormGroup=new FormGroup({});
 
@@ -70,20 +73,48 @@ export class CreateInstructorComponent {
     onSubmit(){
       console.log('form submitted with ');
       console.table(this.createInstructorForm.value);
-      this.createNew(this.createInstructorForm.value);
-      
+      if(!this.instructor){
+        console.log('create New method started')
+        this.createNew(this.createInstructorForm.value);
+      }
+      else{
+        console.log('update existing method started')
+        this.updateExisting(this.instructor._id, 
+          this.createInstructorForm.value);
+      }
     }
 
     //submit to instructor service
     createNew(formValues:Instructor){
       this.instructorsService.addInstructor({...formValues})
       .subscribe({
-        next: response=>{
-          this.router.navigateByUrl('/instructors')},
+        next: response =>{
+          this.successMessage = 'Instructor successfully Created';
+          setTimeout(() => {
+            this.router.navigateByUrl('/instructors'); // Navigate after showing the message
+          }, 2000); // Display the message for 2 seconds
+        },
           error: (err:Error)=>{
             console.log(err.message);
             //this.message = err
           }
+      })
+    }
+
+    //update existing instrutor service
+    updateExisting(id:string, updatedValues:Instructor){
+      this.instructorsService.updateInstructor(id,{...updatedValues})
+      .subscribe({
+        next: response=>{
+          this.successMessage = 'Instructor successfully Updated';
+          setTimeout(() => {
+            this.router.navigateByUrl('/instructors'); // Navigate after showing the message
+          }, 2000); // Display the message for 2 seconds
+        },
+        error: (err : Error) => {
+          console.log (err.message);
+         // this.message = err
+        }
       })
     }
 

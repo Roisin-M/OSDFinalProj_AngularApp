@@ -4,15 +4,24 @@
 <button class="btn btn-primary mb-3" routerLink="/createclasslocation">
     New Class Location
   </button>
-  
-<!-- Display list of class Locations -->
-<ol>
-    @for (u of classLocations; track u.id){
-        <li>
-            Name : {{u.name}}
-            Location : {{u.location}}
-            Max Capacity : {{u.maxCapacity}}
-            Class Formats : {{u.classFormats}}
-        </li>
-    }
-</ol>
+
+ <!--Container for get all class locations-->
+ <div class="container responsive-grid">
+    @for (u of classLocations; track u._id)
+    {
+      <mat-card>
+        <mat-card-header>Details</mat-card-header>
+        <mat-card-content>
+            <p> Name : {{u.name}} </p>
+            <p>  Max Capacity : {{u.maxCapacity}}</p>
+            <p> Location : {{u.location}}</p>
+            <p> id : {{u._id}} </p>
+    <mat-card-actions>
+    <a mat-raised-button color="primary"
+    [routerLink] = "['/classlocations',u._id]">VIEW DETAILS</a>
+  </mat-card-actions>
+</mat-card-content>
+</mat-card>
+  }
+</div>
+

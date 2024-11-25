@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl,
    FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ClassFormat, ClassLocation } from '../../../../interfaces/class-location';
@@ -24,6 +24,9 @@ import { MatSelectModule } from '@angular/material/select';
 export class CreateClassLocationComponent {
 
   createClassLocationForm: FormGroup= new FormGroup({});
+  successMessage: string='';
+
+  @Input() classLocation?: ClassLocation;
 
   //extract class format enum values
   classFormats=Object.values(ClassFormat);
@@ -75,7 +78,15 @@ export class CreateClassLocationComponent {
   onSubmit(){
     console.log('form submitted with');
     console.log(this.createClassLocationForm.value);
-    this.createNew(this.createClassLocationForm.value);
+    if(!this.classLocation){
+      console.log('create New method started')
+      this.createNew(this.createClassLocationForm.value);
+    }
+    else{
+      console.log('update existing method started')
+      this.updateExisting(this.classLocation._id, 
+        this.createClassLocationForm.value);
+    }
   }
 
   //submit to class location service
@@ -83,7 +94,11 @@ export class CreateClassLocationComponent {
     this.classLocationsService.addClasslocation({...formValues})
     .subscribe({
       next: response=>{
-        this.router.navigateByUrl('/classlocations')},
+        this.successMessage = 'Class Location successfully Created';
+         setTimeout(() => {
+            this.router.navigateByUrl('/classlocations'); // Navigate after showing the message
+          }, 2000); // Display the message for 2 seconds
+        },
         error:(err:Error)=>{
           console.log(err.message);
           //this.message=err
@@ -91,4 +106,20 @@ export class CreateClassLocationComponent {
     })
   }
 
+  //update existing class location service 
+  updateExisting(id:string, updatedValues:ClassLocation){
+    this.classLocationsService.updateClassLocation(id,{...updatedValues})
+    .subscribe({
+      next: response=>{
+        this.successMessage = 'Class Location successfully Updated';
+        setTimeout(() => {
+          this.router.navigateByUrl('/classlocations'); // Navigate after showing the message
+        }, 2000); // Display the message for 2 seconds
+      },
+      error: (err : Error) => {
+        console.log (err.message);
+       // this.message = err
+      }
+    })
+  }
 }

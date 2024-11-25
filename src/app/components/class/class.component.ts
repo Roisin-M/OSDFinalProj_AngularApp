@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Class } from '../../interfaces/class';
 import { ClassesService } from '../../services/classes/classes.service';
+import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-class',
   standalone: true,
-  imports: [],
+  imports: [MatCardModule],
   templateUrl: './class.component.html',
   styleUrl: './class.component.css'
 })

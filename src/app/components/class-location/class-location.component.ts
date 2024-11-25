@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ClassLocationsService } from '../../services/classLocations/class-locations.service';
 import { ClassLocation } from '../../interfaces/class-location';
 import { RouterLink } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-class-location',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, MatCardModule],
   templateUrl: './class-location.component.html',
   styleUrl: './class-location.component.css'
 })

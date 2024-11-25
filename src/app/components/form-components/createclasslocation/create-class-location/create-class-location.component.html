@@ -1,4 +1,8 @@
 <h1>Add A New Class Location To The Studio</h1>
+<!-- Success message -->
+@if (successMessage) {
+  <p class="success-message">{{ successMessage }}</p>
+}
 
 <form [formGroup]="createClassLocationForm" (ngSubmit)="onSubmit()">
   <!--Name Form Field-->

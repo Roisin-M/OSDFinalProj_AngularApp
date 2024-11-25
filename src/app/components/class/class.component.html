@@ -1,18 +1,27 @@
-<p>class works!</p>
-<ol>
-    @for (u of classes; track u.id){
-        <li>
-            Description : {{u.description}}
-            InstructorID : {{u.instructorId}}
-            Class Location ID : {{u.classLocationId}}
-            Date : {{u.date}}
-            Class start : {{u.startTime}}
-            Class end : {{u.endTime }}
-            Class Level : {{u.level}}
-            Yoga Type : {{u.type}}
-            Class Focus : {{u.category}}
-            Class Format : {{u.classFormat}}
-            Spaces Available : {{u.spacesAvailable}}
-        </li>
-    }
-</ol>
+<h1>Our Classes</h1>
+<!--Container for get all class locations-->
+<div class="container responsive-grid">
+    @for (u of classes; track u.id)
+    {
+      <mat-card>
+        <mat-card-header>Details</mat-card-header>
+        <mat-card-content>
+            <p>Description : {{u.description}}</p>
+            <p>InstructorID : {{u.instructorId}}</p>
+            <p>Class Location ID : {{u.classLocationId}}</p>
+            <p>Date : {{u.date}}</p>
+            <p>Class start : {{u.startTime}}</p>
+            <p>Class end : {{u.endTime }}</p>
+            <!-- <p>Class Level : {{u.level}}</p>
+            <p>Yoga Type : {{u.type}}</p>
+            <p>Class Focus : {{u.category}}</p>
+            <p>Class Format : {{u.classFormat}}</p> -->
+            <p>Spaces Available : {{u.spacesAvailable}}</p>
+    <mat-card-actions>
+    <!-- <a mat-raised-button color="primary"
+    [routerLink] = "['/classes',u._id]">VIEW DETAILS</a> -->
+  </mat-card-actions>
+</mat-card-content>
+</mat-card>
+  }
+</div>
