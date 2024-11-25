@@ -22,7 +22,6 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class CreateInstructorComponent {
 
-  //to use with details
   @Input() instructor?: Instructor;
   successMessage: string='';
 

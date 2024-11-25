@@ -26,7 +26,6 @@ export class CreateClassLocationComponent {
   createClassLocationForm: FormGroup= new FormGroup({});
   successMessage: string='';
 
-  //to use with details
   @Input() classLocation?: ClassLocation;
 
   //extract class format enum values
@@ -79,7 +78,15 @@ export class CreateClassLocationComponent {
   onSubmit(){
     console.log('form submitted with');
     console.log(this.createClassLocationForm.value);
-    this.createNew(this.createClassLocationForm.value);
+    if(!this.classLocation){
+      console.log('create New method started')
+      this.createNew(this.createClassLocationForm.value);
+    }
+    else{
+      console.log('update existing method started')
+      this.updateExisting(this.classLocation._id, 
+        this.createClassLocationForm.value);
+    }
   }
 
   //submit to class location service
@@ -99,4 +106,20 @@ export class CreateClassLocationComponent {
     })
   }
 
+  //update existing class location service 
+  updateExisting(id:string, updatedValues:ClassLocation){
+    this.classLocationsService.updateClassLocation(id,{...updatedValues})
+    .subscribe({
+      next: response=>{
+        this.successMessage = 'Class Location successfully Updated';
+        setTimeout(() => {
+          this.router.navigateByUrl('/classlocations'); // Navigate after showing the message
+        }, 2000); // Display the message for 2 seconds
+      },
+      error: (err : Error) => {
+        console.log (err.message);
+       // this.message = err
+      }
+    })
+  }
 }
