@@ -35,16 +35,49 @@ export class CreateInstructorComponent {
     private router:Router){}
 
     ngOnInit():void{
-      //initialise the form
-    this.createInstructorForm = this.formBuilder.group({
-      name: new FormControl('',[Validators.required,
-        Validators.minLength(3)]),
-      email: new FormControl('', [Validators.email, 
-        Validators.required]),
-      yogaSpecialities: this.formBuilder.array([], Validators.required)
-    });
+      // Check if 'instructor' is provided for editing or not provided for creating
+      if (this.instructor) {
+        this.initFormWithData();
+      } else {
+        this.initEmptyForm();
+      }
+    }
+
+    //initialise empty form if creating new 
+    private initEmptyForm(): void{
+      this.createInstructorForm = this.formBuilder.group({
+        name: new FormControl('',[Validators.required,
+          Validators.minLength(3)]),
+        email: new FormControl('', [Validators.email, 
+          Validators.required]),
+        yogaSpecialities: this.formBuilder.array([], Validators.required)
+      });
+      
+    }
+
+    //initialise from with populated data from passed instructor obj
+    private initFormWithData(): void{
+      this.createInstructorForm = this.formBuilder.group({
+        name: new FormControl(this.instructor?.name,[Validators.required,
+          Validators.minLength(3)]),
+        email: new FormControl(this.instructor?.email, [Validators.email, 
+          Validators.required]),
+        yogaSpecialities: this.formBuilder.array([], Validators.required)
+      });
+      this.populateYogaSpecialities(this.instructor?.yogaSpecialities);
     }
  
+    //method to populate the yoga specialities for an update
+    private populateYogaSpecialities(specialities: string[]| undefined): void {
+      const yogaSpecialitiesArray = this.yogaSpecialitiesArray;
+      //loop through each yoga Speciality
+      if(specialities){//check if specialities is defined
+        specialities.forEach((speciality) => {
+          yogaSpecialitiesArray.push(this.formBuilder.control(speciality, Validators.required));
+      });
+      }
+  }
+
     // explicitly casts the controls to FormControl[]
     get yogaSpecialitiesArray(): FormArray<FormControl> {
       return this.createInstructorForm.get('yogaSpecialities') as FormArray<FormControl>;
