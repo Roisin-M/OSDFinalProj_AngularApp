@@ -36,16 +36,50 @@ export class CreateClassLocationComponent {
     private router:Router){}
 
   ngOnInit():void{
-     //initialise the form in the constructor
-     this.createClassLocationForm=this.formBuilder.group({
-      name: new FormControl('', [Validators.required, 
-        Validators.minLength(3)]),
-      maxCapacity: new FormControl('', [Validators.required,
-        Validators.min(5)]),
-      location: new FormControl('',[Validators.required, 
-        Validators.minLength(5)]),
-      classFormats: this.formBuilder.array([], Validators.required),
-  });
+        // Check if class location is provided for editing or not provided for creating
+        if (this.classLocation) {
+        this.initFormWithData();
+      } else {
+        this.initEmptyForm();
+      }
+    }
+    
+    //initialise form with populated data from passed class location id
+    private initFormWithData(): void{
+      this.createClassLocationForm=this.formBuilder.group({
+        name: new FormControl(this.classLocation?.name, [Validators.required, 
+          Validators.minLength(3)]),
+        maxCapacity: new FormControl(this.classLocation?.maxCapacity, [Validators.required,
+          Validators.min(5)]),
+        location: new FormControl(this.classLocation?.location,[Validators.required, 
+          Validators.minLength(5)]),
+        classFormats: this.formBuilder.array([], Validators.required),
+    });
+    this.populateclassFormats(this.classLocation?.classFormats);
+    }
+
+    //initialise empty form if creating new 
+    private initEmptyForm(): void{
+    this.createClassLocationForm=this.formBuilder.group({
+     name: new FormControl('', [Validators.required, 
+       Validators.minLength(3)]),
+     maxCapacity: new FormControl('', [Validators.required,
+       Validators.min(5)]),
+     location: new FormControl('',[Validators.required, 
+       Validators.minLength(5)]),
+     classFormats: this.formBuilder.array([], Validators.required),
+ });
+  }
+ 
+    //method to populate the class formats for an update
+    private populateclassFormats(classFormats: string[]| undefined): void {
+      const classFormatsArray = this.classFormatsArray;
+      //loop through each class format
+      if(classFormats){//check if class formats is defined
+        classFormats.forEach((format) => {
+          classFormatsArray.push(this.formBuilder.control(format, Validators.required));
+      });
+      }
   }
 
   //getter to get the formArray -> explicity cast as type FormControl
