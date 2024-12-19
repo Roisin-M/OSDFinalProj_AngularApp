@@ -1,36 +1,37 @@
 <nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container-fluid">
-      <a class="navbar-brand navbar-title">
-        <h1>Yoga Studio Manager</h1>
-      </a>
-      <button 
+  <div class="container-fluid">
+    <a class="navbar-brand navbar-title">
+      <h1>Yoga Studio Manager</h1>
+    </a>
+    <button 
       class="navbar-toggler" 
       type="button" 
       data-bs-toggle="collapse" 
       data-bs-target="#navbarNav"
-       aria-controls="navbarNav" 
-       aria-expanded="false" 
-       aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" routerLink="" routerLinkActive="active">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/instructors" routerLinkActive="active">Instructors</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="classlocations" routerLinkActive="active">Class Locations</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="classes" routerLinkActive="active">Classes</a>
-          </li>
-        </ul>
-        <!--login etc-->
-        <ul class="navbar-nav ml-auto">
-          <!-- Show Welcome Message and Logout if Logged In -->
+      aria-controls="navbarNav" 
+      aria-expanded="false" 
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Left Navigation Links -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/instructors" routerLinkActive="active">Instructors</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="classlocations" routerLinkActive="active">Class Locations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="classes" routerLinkActive="active">Classes</a>
+        </li>
+      </ul>
+      <!-- Login Section -->
+      <div class="navbar-login-section">
+        <ul class="navbar-nav">
           @if (isAuthenticated$ | async) {
             <li class="nav-item">
               <span class="nav-link">Welcome back, {{ (currentUser$ | async)?.name }}!</span>
@@ -39,7 +40,6 @@
               <a class="nav-link" (click)="logout()">Logout</a>
             </li>
           }
-          <!-- Show Login if Not Logged In -->
           @else {
             <li class="nav-item">
               <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
@@ -48,7 +48,8 @@
         </ul>
       </div>
     </div>
-  </nav>
-  <div>
-    <router-outlet></router-outlet>
   </div>
+</nav>
+<div>
+  <router-outlet></router-outlet>
+</div>
