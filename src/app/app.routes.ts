@@ -8,6 +8,7 @@ import { CreateClassComponent } from './components/form-components/create-class/
 import { CreateClassLocationComponent } from './components/form-components/createclasslocation/create-class-location/create-class-location.component';
 import { InstructorDetailsComponent } from './components/view-details-components/instructorDetails/instructor-details/instructor-details.component';
 import { ClassLocationDetailsComponent } from './components/view-details-components/class-locationDetails/class-location-details/class-location-details.component';
+import { LoginComponent } from './components/authentication/login/login/login.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -18,5 +19,6 @@ export const routes: Routes = [
     {path: 'createinstructor', component:CreateInstructorComponent},
     {path: 'createclasslocation', component:CreateClassLocationComponent},
     {path: 'instructors/:id', component:InstructorDetailsComponent},
-    {path: 'classlocations/:id', component:ClassLocationDetailsComponent}
+    {path: 'classlocations/:id', component:ClassLocationDetailsComponent},
+    {path: 'login', component:LoginComponent}
 ];
