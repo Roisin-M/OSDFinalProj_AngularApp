@@ -51,7 +51,8 @@ export class LoginComponent {
       this.router.navigateByUrl('/');
        },
        error: (err : Error) =>{
-console.log (err.message);
+        console.log (err.message);
+        this.openErrorSnackBar('Incorrect email or password');
        }
 
     });
@@ -63,6 +64,13 @@ console.log (err.message);
   }
   get password() {
     return this.loginForm.get('password')?.value;
+  }
+
+  openErrorSnackBar(message: string): void {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 15000, // Set the duration for how long the snackbar should be visible (in milliseconds)
+      panelClass: ['error-snackbar'], // You can define custom styles for the snackbar
+    });
   }
 
 }

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { User } from '../../interfaces/user';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,7 @@ export class AuthCustomService {
       // refresh tokens are not implmented yet so we logout instead.
       //this.getNewAccessToken().subscribe();
       this.logout();
+      this.openErrorSnackBar('Session expired. Please log in again.');
       }
     }, timeout);
   }
@@ -82,6 +84,16 @@ export class AuthCustomService {
     this.currentUser$.next(null);
  //   this.token$.next('');
     this.isAuthenticated$.next(false);
+    if (this.authenticateTimeout) {
+      clearTimeout(this.authenticateTimeout);
+    }
+  }
+
+  openErrorSnackBar(message: string): void {
+    const snackBar = inject(MatSnackBar); // Inject Angular's SnackBar service
+    snackBar.open(message, 'Dismiss', {
+      duration: 5000,
+    });
   }
 
   // this hasn't been implemented on the server yet 
