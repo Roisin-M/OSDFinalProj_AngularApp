@@ -3,8 +3,14 @@
       <a class="navbar-brand navbar-title">
         <h1>Yoga Studio Manager</h1>
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarNav"
+       aria-controls="navbarNav" 
+       aria-expanded="false" 
+       aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -21,6 +27,24 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="classes" routerLinkActive="active">Classes</a>
           </li>
+        </ul>
+        <!--login etc-->
+        <ul class="navbar-nav ml-auto">
+          <!-- Show Welcome Message and Logout if Logged In -->
+          @if (isAuthenticated$ | async) {
+            <li class="nav-item">
+              <span class="nav-link">Welcome back, {{ (currentUser$ | async)?.name }}!</span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+          }
+          <!-- Show Login if Not Logged In -->
+          @else {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+            </li>
+          }
         </ul>
       </div>
     </div>

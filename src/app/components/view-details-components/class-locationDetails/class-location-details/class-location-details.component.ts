@@ -6,6 +6,7 @@ import { Observable, tap } from 'rxjs';
 import { CreateClassLocationComponent } from '../../../form-components/createclasslocation/create-class-location/create-class-location.component';
 import { MatCardModule } from '@angular/material/card'
 import { MatButton, MatButtonModule } from '@angular/material/button'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-class-location-details',
@@ -21,9 +22,11 @@ export class ClassLocationDetailsComponent {
   showForm:boolean=false;
   successMessage:string='';
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private classLocationsService:ClassLocationsService,
-    private router:Router){}
+    private router:Router,
+    private snackBar: MatSnackBar){}
 
     //get by id from service
     ngOnInit():void{
@@ -61,11 +64,21 @@ export class ClassLocationDetailsComponent {
               this.router.navigateByUrl('/classlocations'); // Navigate after showing the message
             }, 2000); // Display the message for 2 seconds
           },
-            error:(err:Error)=>{
-              console.log(err.message);
-              //this.message = err
+          error:(err: any)=>{
+            console.log('Error deleting class location', err.message);
+            //display snackbar message based on error code
+            if(err.status === 401){
+              this.openErrorSnackBar('You must be logged in to delete a class location')
+            }else {
+              this.openErrorSnackBar( 'An error occurred while trying to delete the class location');
             }
+          }
         })
       }
+    }
+    openErrorSnackBar(message: string): void {
+      this.snackBar.open(message, 'Dismiss', {
+        duration: 5000,
+      });
     }
 }

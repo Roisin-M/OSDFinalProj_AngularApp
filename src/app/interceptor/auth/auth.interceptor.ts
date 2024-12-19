@@ -29,8 +29,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             authService.logout(); // Clear the token
             router.navigate(['/login'], { queryParams: { sessionExpired: true } });
             console.error('Session expired: Redirecting to login');
+            authService.openErrorSnackBar('Session expired. Please log in again.');
           } else if (err.status === 403) {
             console.error('Forbidden: Invalid token');
+            authService.openErrorSnackBar('Forbidden: Invalid Credentials');
           }
         } else {
           console.error('An unknown error occurred', err);

@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,16 @@ export class AuthCustomService {
   readonly currentUser$ : BehaviorSubject<User | null> ;
   readonly isAuthenticated$ : BehaviorSubject<boolean>;
   
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router:Router,
+    private snackBar: MatSnackBar
+  ) {
 
     this.currentUser$ = new BehaviorSubject<User | null> 
     (JSON.parse(localStorage.getItem('user') || '{}'));
 
     const token = localStorage.getItem('token') || '';
-
     // if there is a token we need to check if it has
     // expired.
    if (token != "") {
@@ -31,6 +35,7 @@ export class AuthCustomService {
     }
     else{
        this.isAuthenticated$ = new BehaviorSubject<boolean>(false) 
+       this.logout();
     }
   }
   else{
@@ -73,6 +78,7 @@ export class AuthCustomService {
       //this.getNewAccessToken().subscribe();
       this.logout();
       this.openErrorSnackBar('Session expired. Please log in again.');
+      this.router.navigate(['/login'], { queryParams: { sessionExpired: true } });
       }
     }, timeout);
   }
@@ -90,19 +96,10 @@ export class AuthCustomService {
   }
 
   openErrorSnackBar(message: string): void {
-    const snackBar = inject(MatSnackBar); // Inject Angular's SnackBar service
-    snackBar.open(message, 'Dismiss', {
+    this.snackBar.open(message, 'Dismiss', {
       duration: 5000,
     });
   }
-
-  // this hasn't been implemented on the server yet 
-  // we will be logged out instead.
-
-  private getNewAccessToken(): Observable<any> {
-      return this.http.post<any>(`${this.Uri}/auth/refresh`, {email : this.currentUser$.value?.email},
-        { withCredentials: true })
-      }
 
 }
 

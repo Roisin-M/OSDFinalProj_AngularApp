@@ -6,6 +6,7 @@ import { InstructorsService } from '../../../../services/instructors/instructors
 import { CreateInstructorComponent } from '../../../form-components/createInstructor/create-instructor/create-instructor.component';
 import { MatCardModule } from '@angular/material/card'
 import { MatButton, MatButtonModule } from '@angular/material/button'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-instructor-details',
@@ -26,7 +27,8 @@ export class InstructorDetailsComponent {
 
   constructor(private route: ActivatedRoute,
     private instructorsService: InstructorsService,
-    private router:Router
+    private router:Router,
+    private snackBar: MatSnackBar
   ){}
 
   //get by id from service
@@ -65,12 +67,23 @@ export class InstructorDetailsComponent {
             this.router.navigateByUrl('/instructors'); // Navigate after showing the message
           }, 2000); // Display the message for 2 seconds
         },
-          error:(err:Error)=>{
-            console.log(err.message);
-            //this.message = err
+          error:(err: any)=>{
+            console.log('Error deleting instructor', err.message);
+            //display snackbar message based on error code
+            if(err.status === 401){
+              this.openErrorSnackBar('You must be logged in to delete an instructor')
+            }else {
+              this.openErrorSnackBar( 'An error occurred while trying to delete the instructor');
+            }
           }
-      })
+      });
     }
+  }
+
+  openErrorSnackBar(message: string): void {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 5000,
+    });
   }
 
   // updateInstructor(updatedInstructor: Instructor): void {
