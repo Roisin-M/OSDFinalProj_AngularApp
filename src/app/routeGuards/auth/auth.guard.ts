@@ -12,7 +12,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       return true;
     } else {
       //will be asked to login if arent signed in
-      router.navigate(['/login']);
+      router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
       return false;
     }  
 };
