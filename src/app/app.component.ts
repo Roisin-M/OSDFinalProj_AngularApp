@@ -32,5 +32,6 @@ export class AppComponent {
 
   logout() {
     this.authService.logout();
+    this.authService.openErrorSnackBar('Success: You have been logged out');
   }
 }

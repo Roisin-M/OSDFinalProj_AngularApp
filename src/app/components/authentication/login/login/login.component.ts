@@ -53,7 +53,7 @@ export class LoginComponent {
     subscribe({
       next: response  =>
        {
-      console.log('user is logged in'), 
+      this.authService.openErrorSnackBar('success: You have logged in'), 
       this.router.navigateByUrl(this.returnUrl);
        },
        error: (err : Error) =>{
