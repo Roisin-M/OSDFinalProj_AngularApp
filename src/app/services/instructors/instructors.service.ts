@@ -71,8 +71,8 @@ export class InstructorsService {
       console.error(
         `Backend returned code ${error.status}, body was: `, error.error);
     }
-    // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+      // Propagate error so the component can handle it
+      return throwError(() => error);
   }
 
 

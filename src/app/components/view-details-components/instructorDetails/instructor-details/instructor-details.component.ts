@@ -7,6 +7,7 @@ import { CreateInstructorComponent } from '../../../form-components/createInstru
 import { MatCardModule } from '@angular/material/card'
 import { MatButton, MatButtonModule } from '@angular/material/button'
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-instructor-details',
@@ -67,16 +68,27 @@ export class InstructorDetailsComponent {
             this.router.navigateByUrl('/instructors'); // Navigate after showing the message
           }, 2000); // Display the message for 2 seconds
         },
-          error:(err: any)=>{
+          error:(err: HttpErrorResponse)=>{
             console.log('Error deleting instructor', err.message);
+
             //display snackbar message based on error code
-            if(err.status === 401){
-              this.openErrorSnackBar('You must be logged in to delete an instructor')
-            }else {
-              this.openErrorSnackBar( 'An error occurred while trying to delete the instructor');
+            if(err.status === 403){
+              this.openErrorSnackBar('Forbidden: You do not have permission to delete this instructor.');
+              this.router.navigate(['/login'], {
+                queryParams: { sessionExpired: true },
+              });
+            } else if(err.status === 401){
+              this.openErrorSnackBar('Unauthorized: Please log in to delete an instructor');
+              this.router.navigate(['/login'],{
+                queryParams: {sessionExpired: true},
+              });
+            } else{
+              this.openErrorSnackBar('An error occurred while trying to delete the instructor');
             }
-          }
+          } 
       });
+    } else{
+      this.openErrorSnackBar('An unknown error occurred. Please try again later');
     }
   }
 

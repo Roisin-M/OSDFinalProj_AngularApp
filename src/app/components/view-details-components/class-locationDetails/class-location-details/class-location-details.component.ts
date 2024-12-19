@@ -7,6 +7,7 @@ import { CreateClassLocationComponent } from '../../../form-components/createcla
 import { MatCardModule } from '@angular/material/card'
 import { MatButton, MatButtonModule } from '@angular/material/button'
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-class-location-details',
@@ -64,17 +65,28 @@ export class ClassLocationDetailsComponent {
               this.router.navigateByUrl('/classlocations'); // Navigate after showing the message
             }, 2000); // Display the message for 2 seconds
           },
-          error:(err: any)=>{
-            console.log('Error deleting class location', err.message);
-            //display snackbar message based on error code
-            if(err.status === 401){
-              this.openErrorSnackBar('You must be logged in to delete a class location')
-            }else {
-              this.openErrorSnackBar( 'An error occurred while trying to delete the class location');
-            }
-          }
-        })
-      }
+ error:(err: HttpErrorResponse)=>{
+        console.log('Error deleting class location', err.message);
+
+        //display snackbar message based on error code
+        if(err.status === 403){
+          this.openErrorSnackBar('Forbidden: You do not have permission to delete this class location');
+          this.router.navigate(['/login'], {
+            queryParams: { sessionExpired: true },
+          });
+        } else if(err.status === 401){
+          this.openErrorSnackBar('Unauthorized: Please log in to delete a class location');
+          this.router.navigate(['/login'],{
+            queryParams: {sessionExpired: true},
+          });
+        } else{
+          this.openErrorSnackBar('An error occurred while trying to delete the class location');
+        }
+      } 
+      });
+    } else{
+      this.openErrorSnackBar('An unknown error occurred. Please try again later');
+    }
     }
     openErrorSnackBar(message: string): void {
       this.snackBar.open(message, 'Dismiss', {
