@@ -1,26 +1,52 @@
-<h1>Our Class Locations</h1>
+<h1>Filter by Class Format</h1>
+<div class="container">
+  <!-- Radio Button Group -->
+  <form [formGroup]="classFormatFilterForm" (ngSubmit)="onFilter()">
+    <fieldset>
+      <legend>Select Class Format</legend>
+      <mat-radio-group formControlName="selectedClassFormat">
+        @for (format of classFormats; track format) {
+          <mat-radio-button [value]="format">{{ format }}</mat-radio-button>
+        }
+      </mat-radio-group>
+    </fieldset>
+  
+    <!-- Buttons -->
+     <mat-card-actions>
+       <button mat-raised-button class="btn btn-primary mb-3" type="submit">Filter</button>
+       <button mat-raised-button class="btn btn-red mb-3" type="button" (click)="resetFilter()">Reset</button>
+
+     </mat-card-actions>
+  </form>
+
+</div>
 
 <!-- New Class Location Button -->
 <button class="btn btn-primary mb-3" routerLink="/createclasslocation">
     New Class Location
   </button>
 
- <!--Container for get all class locations-->
- <div class="container responsive-grid">
-    @for (u of classLocations; track u._id)
-    {
+<!-- Container for filtered class locations -->
+<div class="container responsive-grid">
+  @if (filteredClassLocations.length > 0) {
+    @for (u of filteredClassLocations; track u._id) {
       <mat-card>
         <mat-card-header>Details</mat-card-header>
         <mat-card-content>
-            <p> Name : {{u.name}} </p>
-            <p>  Max Capacity : {{u.maxCapacity}}</p>
-            <p> Location : {{u.location}}</p>
-    <mat-card-actions>
-    <a mat-raised-button color="primary"
-    [routerLink] = "['/classlocations',u._id]">VIEW DETAILS</a>
-  </mat-card-actions>
-</mat-card-content>
-</mat-card>
+          <p>Name: {{ u.name }}</p>
+          <p>Max Capacity: {{ u.maxCapacity }}</p>
+          <p>Location: {{ u.location }}</p>
+          <p>Formats: {{ u.classFormats.join(', ') }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-raised-button color="primary" [routerLink]="['/classlocations', u._id]">
+            VIEW DETAILS
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    }
+  } @else {
+    <p>No class locations found for the selected format.</p>
   }
 </div>
 

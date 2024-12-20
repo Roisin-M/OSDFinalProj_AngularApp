@@ -1,26 +1,64 @@
 .container {
-    padding: 24px
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center; 
 }
 
 .responsive-grid {
     display: grid;
     gap: 24px;
+    justify-content: center; 
   }
+
+  .filter-section {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers the filter section */
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .class-format-filter {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+  }
+
 mat-card{
-  background-color: rgb(246, 217, 156);
+  background-color: rgb(247, 192, 244);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a slight shadow for depth */
+  border-radius: 8px; /* Rounds the card corners */
+  overflow: hidden; /* Ensures content doesn’t overflow */
+  max-width: 100%; /* Prevents cards from overflowing */
 }
-button{
+mat-card-header {
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.2rem; /* Makes the header text slightly larger */
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.8); /* Adds a semi-transparent background */
+}
+button {
   border-radius: 4px;
-  margin-left: 40%;
-  margin-right: 40%;
+  margin: 0 auto;
+  display: block; /* Centers the buttons */
+}
+.btn-red {
+  background-color: #ff4d4d; /* Light red color */
+  color: white; /* Ensures text is visible */
+  border: none; /* Removes border */
 }
 h1{
-  margin-left: 30%;
-  margin-right: 30%;
+  text-align: center; /* Centers the title */
+  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: bold;
 }
 @media (min-width: 600px){
     .responsive-grid {
-        display: grid;
         grid-template-columns: repeat(2, 1fr); 
         gap: 24px;
       }
@@ -28,7 +66,6 @@ h1{
 
 @media (min-width: 900px){
 .responsive-grid {
-    display: grid;
     grid-template-columns: repeat(4, 1fr); 
     gap: 24px;
   }
