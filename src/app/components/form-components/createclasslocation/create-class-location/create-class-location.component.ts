@@ -11,6 +11,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import{MatRadioModule} from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-class-location',
@@ -33,7 +35,8 @@ export class CreateClassLocationComponent {
 
   constructor(private formBuilder: FormBuilder,
     private classLocationsService:ClassLocationsService,
-    private router:Router){}
+    private router:Router,
+  private snackBar : MatSnackBar){}
 
   ngOnInit():void{
         // Check if class location is provided for editing or not provided for creating
@@ -140,7 +143,7 @@ export class CreateClassLocationComponent {
     })
   }
 
-  //update existing class location service 
+  //update existing class location service with route guard
   updateExisting(id:string, updatedValues:ClassLocation){
     this.classLocationsService.updateClassLocation(id,{...updatedValues})
     .subscribe({
@@ -150,10 +153,31 @@ export class CreateClassLocationComponent {
           this.router.navigateByUrl('/classlocations'); // Navigate after showing the message
         }, 2000); // Display the message for 2 seconds
       },
-      error: (err : Error) => {
+      error: (err : HttpErrorResponse) => {
         console.log (err.message);
-       // this.message = err
+        this.handleUpdateError(err);
       }
     })
   }
+private handleUpdateError(err: HttpErrorResponse): void {
+      console.log('Error updating class location:', err.message);
+  
+      if (err.status === 403) {
+        this.openErrorSnackBar('Forbidden: You do not have permission to update this class location.');
+        this.router.navigate(['/login'], { queryParams: { sessionExpired: true }, });
+      } else if (err.status === 401) {
+        this.openErrorSnackBar('Unauthorized: Please log in to update this class location.');
+        this.router.navigate(['/login'], { queryParams: { sessionExpired: true }, });
+      } else {
+        this.openErrorSnackBar('An error occurred while trying to update the class location.');
+      }
+    }
+
+    openErrorSnackBar(message: string): void {
+      this.snackBar.open(message, 'Dismiss', {
+        duration: 5000,
+      });
+    }
+
 }
+

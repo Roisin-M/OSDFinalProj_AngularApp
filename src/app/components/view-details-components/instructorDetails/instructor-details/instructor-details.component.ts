@@ -52,9 +52,11 @@ export class InstructorDetailsComponent {
     }
   }
 
-  editInstructor():void{
-    this.showForm=true;
+  editInstructor(): void {
+    console.log("in edit");
+    this.showForm = true; // Show the form for editing
   }
+  
 
   deleteInstructor():void{
     console.log("in delete");

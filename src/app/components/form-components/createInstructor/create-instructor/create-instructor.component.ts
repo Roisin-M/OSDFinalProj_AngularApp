@@ -11,6 +11,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import{MatRadioModule} from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-create-instructor',
   standalone: true,
@@ -32,7 +34,8 @@ export class CreateInstructorComponent {
 
   constructor(private formBuilder: FormBuilder,
     private instructorsService:InstructorsService,
-    private router:Router){}
+    private router:Router,
+  private snackBar: MatSnackBar){}
 
     ngOnInit():void{
       // Check if 'instructor' is provided for editing or not provided for creating
@@ -134,7 +137,7 @@ export class CreateInstructorComponent {
       })
     }
 
-    //update existing instrutor service
+    //update existing instrutor service with route guard
     updateExisting(id:string, updatedValues:Instructor){
       this.instructorsService.updateInstructor(id,{...updatedValues})
       .subscribe({
@@ -144,11 +147,31 @@ export class CreateInstructorComponent {
             this.router.navigateByUrl('/instructors'); // Navigate after showing the message
           }, 2000); // Display the message for 2 seconds
         },
-        error: (err : Error) => {
+        error: (err : HttpErrorResponse) => {
           console.log (err.message);
-         // this.message = err
+          this.handleUpdateError(err);
         }
       })
+    }
+
+    private handleUpdateError(err: HttpErrorResponse): void {
+      console.log('Error updating instructor:', err.message);
+  
+      if (err.status === 403) {
+        this.openErrorSnackBar('Forbidden: You do not have permission to update this instructor.');
+        this.router.navigate(['/login'], { queryParams: { sessionExpired: true } });
+      } else if (err.status === 401) {
+        this.openErrorSnackBar('Unauthorized: Please log in to update this instructor.');
+        this.router.navigate(['/login'], { queryParams: { sessionExpired: true } });
+      } else {
+        this.openErrorSnackBar('An error occurred while trying to update the instructor.');
+      }
+    }
+
+    openErrorSnackBar(message: string): void {
+      this.snackBar.open(message, 'Dismiss', {
+        duration: 5000,
+      });
     }
 
 }
