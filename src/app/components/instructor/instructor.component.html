@@ -1,24 +1,47 @@
 <h1>Our Instructors</h1>
 <p>{{message}}</p>
 
+<!-- Filter Section -->
+<div class="filter-section">
+  <mat-form-field appearance="outline">
+    <mat-label>Filter by Yoga Speciality</mat-label>
+    <mat-select [(ngModel)]="selectedSpecialities" multiple>
+      @for (speciality of yogaSpecialities; track speciality) {
+        <mat-option [value]="speciality">{{ speciality }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-card-actions>
+    <button mat-raised-button class="btn btn-primary mb-3" (click)="filterInstructors()">Filter</button>
+    <button mat-raised-button class="btn btn-red mb-3" (click)="resetFilter()">Reset to All</button>
+  </mat-card-actions>
+  
+</div>
+
 <!-- New Instructor Button -->
 <button class="btn btn-primary mb-3" routerLink="/createinstructor">
     New Instructor
   </button>
-  <!--Container for get all instructors-->
+
+<!-- Container for filtered instructors -->
 <div class="container responsive-grid">
-    @for (u of instructors; track u._id)
-    {
+  @if (filteredInstructors.length > 0) {
+    @for (u of filteredInstructors; track u._id) {
       <mat-card>
         <mat-card-header>Details</mat-card-header>
         <mat-card-content>
-      <p>Name : {{u.name}} </p>
-      <p>Email : {{u.email}}</p>
-    <mat-card-actions>
-    <a mat-raised-button color="primary"
-    [routerLink] = "['/instructors',u._id]">VIEW DETAILS</a>
-  </mat-card-actions>
-</mat-card-content>
-</mat-card>
+          <p>Name: {{ u.name }}</p>
+          <p>Email: {{ u.email }}</p>
+          <p>Specialities: {{ u.yogaSpecialities.join(', ') }}</p>
+          <mat-card-actions>
+            <a mat-raised-button color="primary" [routerLink]="['/instructors', u._id]">
+              VIEW DETAILS
+            </a>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    }
+  } @else {
+    <p>No instructors found for the selected speciality.</p>
   }
 </div>
