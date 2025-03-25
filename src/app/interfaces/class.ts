@@ -44,10 +44,10 @@ export enum ClassFormat {
     Both = 'Both' 
 }
 export interface Class {
-    id?: string;
-    instructorId: string; // Reference to the Instructor for one-to many relationship
+    _id?: any;
+    instructorId: any; // Reference to the Instructor for one-to many relationship
     description: string;
-    classLocationId: string; // Reference to the Class Location for one-to many relationship
+    classLocationId: any; // Reference to the Class Location for one-to many relationship
     date: Date; //type date (day only)
     startTime: string; //hh:mm string in 24 hour format
     endTime: string;  //hh:mm string in 24 hour format
@@ -56,4 +56,5 @@ export interface Class {
     category: ClassCategory[]; // Array of class categories (focus of the class)
     classFormat: ClassFormat; // Format of the class (Location, Stream, or Both)
     spacesAvailable: number; // Number of available spaces for the class
+    userIds?: any[]; //array of userIds (references to users) that have booked the class
 }

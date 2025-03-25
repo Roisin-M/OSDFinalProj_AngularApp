@@ -1,0 +1,51 @@
+<!-- Success message -->
+@if (successMessage) {
+    <p class="success-message">{{ successMessage }}</p>
+  }
+
+@if(yogaClass){
+    @if(showForm){
+        <div>
+            <!-- <app-create-instructor 
+            [instructor]="instructor" 
+            ></app-create-instructor> -->
+        </div>
+    }
+    @else {
+        <mat-card>
+            <mat-card-header>Class Details</mat-card-header>
+            <mat-card-content>
+                <p>Description : {{yogaClass.description}}</p>
+                <p>InstructorID : {{yogaClass.instructorId}}</p>
+                <p>Class Location ID : {{yogaClass.classLocationId}}</p>
+                <p>Date : {{yogaClass.date}}</p>
+                <p>Class start : {{yogaClass.startTime}}</p>
+                <p>Class end : {{yogaClass.endTime }}</p>
+                <p>Class Format : {{yogaClass.classFormat}}</p>
+                <p>Spaces Available : {{yogaClass.spacesAvailable}}</p>
+                <ul>
+                    @for (speciality of yogaClass.type; track speciality; let i=$index){
+                        <li>{{ speciality }}</li>
+                    }
+                </ul>
+                <ul>
+                    @for (category of yogaClass.category; track category; let i=$index){
+                        <li>{{ category }}</li>
+                    }
+                </ul>
+                <ul>
+                    @for (level of yogaClass.level; track level; let i=$index){
+                        <li>{{ level }}</li>
+                    }
+                </ul>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="editClass()" >Edit</button>
+                <button mat-flat-button color="error" (click)="deleteClass()" >Delete </button>
+        </mat-card-actions>
+        </mat-card>
+    } 
+}
+@else {
+    <p>Loading class details...</p>
+}

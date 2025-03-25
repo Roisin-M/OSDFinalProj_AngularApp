@@ -8,6 +8,7 @@ import { CreateClassComponent } from './components/form-components/create-class/
 import { CreateClassLocationComponent } from './components/form-components/createclasslocation/create-class-location/create-class-location.component';
 import { InstructorDetailsComponent } from './components/view-details-components/instructorDetails/instructor-details/instructor-details.component';
 import { ClassLocationDetailsComponent } from './components/view-details-components/class-locationDetails/class-location-details/class-location-details.component';
+import { ClassDetailsComponent } from './components/view-details-components/classDetails/class-details/class-details.component';
 import { LoginComponent } from './components/authentication/login/login/login.component';
 import { audit } from 'rxjs';
 import { authGuard } from './routeGuards/auth/auth.guard';
@@ -22,5 +23,6 @@ export const routes: Routes = [
     {path: 'createclasslocation', component:CreateClassLocationComponent, canActivate: [authGuard]},
     {path: 'instructors/:id', component:InstructorDetailsComponent},
     {path: 'classlocations/:id', component:ClassLocationDetailsComponent},
+    {path: 'classes/:id', component:ClassDetailsComponent},
     {path: 'login', component:LoginComponent}
 ];
