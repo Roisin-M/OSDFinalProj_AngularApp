@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { Class } from '../../../../interfaces/class';
 import { ClassesService } from '../../../../services/classes/classes.service';
-//import { CreateInstructorComponent } from '../../../form-components/createInstructor/create-instructor/create-instructor.component';
+import { CreateClassComponent } from '../../../form-components/create-class/create-class/create-class.component';
 import { MatCardModule } from '@angular/material/card'
 import { MatButton, MatButtonModule } from '@angular/material/button'
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-class-details',
   standalone: true,
-  imports: [MatCardModule, MatButton],
+  imports: [MatCardModule, MatButton, CreateClassComponent],
   templateUrl: './class-details.component.html',
   styleUrl: './class-details.component.css'
 })

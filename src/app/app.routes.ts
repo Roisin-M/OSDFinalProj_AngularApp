@@ -21,6 +21,7 @@ export const routes: Routes = [
     {path: 'classes', component:ClassComponent},
     {path: 'createinstructor', component:CreateInstructorComponent, canActivate: [authGuard]},
     {path: 'createclasslocation', component:CreateClassLocationComponent, canActivate: [authGuard]},
+    {path: 'createclass', component:CreateClassComponent},
     {path: 'instructors/:id', component:InstructorDetailsComponent},
     {path: 'classlocations/:id', component:ClassLocationDetailsComponent},
     {path: 'classes/:id', component:ClassDetailsComponent},

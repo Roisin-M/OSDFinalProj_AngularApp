@@ -53,6 +53,14 @@ export class ClassesService {
     )
   }
 
+  //create class
+  addClass(classItem:Class): Observable<Class>{
+    return this.http.post<Class>(this.classUri, classItem)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
   
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
