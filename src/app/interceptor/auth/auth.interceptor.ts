@@ -18,6 +18,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // so we check that the request is to our own api
 
   if (req.url.startsWith(apiUri) && jwt != '') {
+    if (req.url.endsWith('/auth')) {
+      return next(req); // Don't interfere with login call
+    }
+
     const authRequest = req.clone({
       setHeaders: { authorization: `Bearer ${jwt}` },
     });

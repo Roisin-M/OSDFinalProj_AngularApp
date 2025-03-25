@@ -4,10 +4,12 @@ import { Observable, tap } from 'rxjs';
 import { Class } from '../../../../interfaces/class';
 import { ClassesService } from '../../../../services/classes/classes.service';
 import { CreateClassComponent } from '../../../form-components/create-class/create-class/create-class.component';
+import { BookingsService } from '../../../../services/bookings/bookings.service';
 import { MatCardModule } from '@angular/material/card'
 import { MatButton, MatButtonModule } from '@angular/material/button'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthCustomService } from '../../../../services/authentication/auth-custom.service';
 
 @Component({
   selector: 'app-class-details',
@@ -21,12 +23,20 @@ export class ClassDetailsComponent {
   yogaClass:Class | null=null;
   showForm: boolean = false;
   successMessage:string='';
+  //temporary user id
+  //userId = '67656f160a8c1c2c7f1fcfd2';
 
   constructor(private route: ActivatedRoute,
     private classService: ClassesService,
+    private bookingService: BookingsService,
     private router:Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthCustomService
   ){}
+
+  get userId(): string | undefined{
+    return this.authService.currentUser$.value?._id ?? undefined;
+  }
 
   //get by id from service
     ngOnInit():void{
@@ -92,6 +102,24 @@ export class ClassDetailsComponent {
     openErrorSnackBar(message: string): void {
       this.snackBar.open(message, 'Dismiss', {
         duration: 5000,
+      });
+    }
+
+    bookClass(): void {
+      if (!this.yogaClass || !this.userId){
+        this.openErrorSnackBar('User not logged in or class not selected');
+        return;
+      } 
+  
+      this.bookingService.bookClass(this.userId, this.yogaClass._id).subscribe({
+        next: (response) => {
+          this.successMessage = 'Successfully booked this class!';
+          console.log(response);
+        },
+        error: (err) => {
+          console.log('Booking error:', err.message);
+          this.openErrorSnackBar(err.error?.message || 'Could not book class');
+        }
       });
     }
   

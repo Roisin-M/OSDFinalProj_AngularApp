@@ -20,14 +20,22 @@ export class AuthCustomService {
     private snackBar: MatSnackBar
   ) {
 
-    this.currentUser$ = new BehaviorSubject<User | null> 
-    (JSON.parse(localStorage.getItem('user') || '{}'));
+    // this.currentUser$ = new BehaviorSubject<User | null> 
+    // (JSON.parse(localStorage.getItem('user') || '{}'));
+    const savedUser = localStorage.getItem('user');
+    const parsedUser = savedUser ? JSON.parse(savedUser) : null;
+    this.currentUser$ = new BehaviorSubject<User | null>(parsedUser);
+
 
     const token = localStorage.getItem('token') || '';
     // if there is a token we need to check if it has
     // expired.
    if (token != "") {
     const payload = JSON.parse(atob(token.split('.')[1]));
+    // safety check
+    if (!payload._id) {
+      console.error("Missing _id in token!");
+    }
     const expires = payload.exp *1000
     if (expires > Date.now()){
       this.isAuthenticated$ = new BehaviorSubject<boolean>(true)
@@ -54,6 +62,7 @@ export class AuthCustomService {
       .pipe(
         map((body) => {
           const payload = JSON.parse(atob(body.accessToken.split('.')[1]));
+          console.log("Decoded token payload: ", payload);
           const expires = payload.exp *1000
           localStorage.setItem('token', body.accessToken);
           localStorage.setItem('user', JSON.stringify(payload));
