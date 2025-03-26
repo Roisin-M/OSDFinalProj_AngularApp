@@ -3,4 +3,5 @@ export interface User {
     phonenumber: string;
     email: string;
     _id?: string;
+    role?: 'user';
 }

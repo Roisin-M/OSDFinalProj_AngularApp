@@ -1,29 +1,39 @@
 <div class="login-container">
-    <div class="login-form">
-      <h1 class="login-title">Login</h1>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div>
-          <mat-form-field appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" type="email" />
-            <mat-error>
-              <span>Email must have &#64;</span>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field appearance="fill">
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" type="password" />
-            <mat-error>
-              <span>Password must be at least 6 characters long.</span>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <button mat-raised-button type="submit" [disabled]="loginForm.invalid">
-          Login
-        </button>
-      </form>
-    </div>
-  </div>
-  
+  <mat-card class="mat-elevation-z3 login-form">
+    <mat-card-header>
+      <mat-card-title class="login-title">Login</mat-card-title>
+    </mat-card-header>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Login As</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="user">User</mat-option>
+          <mat-option value="instructor">Instructor</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      @if (loginForm.get('role')?.value === 'instructor') {
+        <p class="role-info">You are logging in as an <strong>Instructor</strong></p>
+      } @else {
+        <p class="role-info">You are logging in as a <strong>User</strong></p>
+      }
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" />
+        <mat-error>Email must include &#64;</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" />
+        <mat-error>Password must be at least 6 characters long.</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+        Login
+      </button>
+    </form>
+  </mat-card>
+</div>

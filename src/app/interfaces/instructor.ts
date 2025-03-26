@@ -28,4 +28,5 @@ export interface Instructor {
     email:string;
     classIds?: any[];
     _id: any; // MongoDB ObjectId represented as a string
+    role?: 'instructor';
 }

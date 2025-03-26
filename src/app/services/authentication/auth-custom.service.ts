@@ -56,9 +56,15 @@ export class AuthCustomService {
   private authenticateTimeout?: any;
 
 
-  public login(email: string, password: string): Observable<any> {
+  public login(email: string, password: string, role: 'user'|'instructor'): Observable<any> {
+    let loginEndpoint = '';
+    if (role === 'instructor') {
+      loginEndpoint = `${this.Uri}/auth/instructor`;
+    } else {
+      loginEndpoint = `${this.Uri}/auth`;
+    }
     return this.http
-      .post<any>(`${this.Uri}/auth`, { email: email, password: password })
+      .post<any>(loginEndpoint, { email: email, password: password })
       .pipe(
         map((body) => {
           const payload = JSON.parse(atob(body.accessToken.split('.')[1]));

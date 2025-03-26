@@ -10,6 +10,7 @@ import { InstructorDetailsComponent } from './components/view-details-components
 import { ClassLocationDetailsComponent } from './components/view-details-components/class-locationDetails/class-location-details/class-location-details.component';
 import { ClassDetailsComponent } from './components/view-details-components/classDetails/class-details/class-details.component';
 import { LoginComponent } from './components/authentication/login/login/login.component';
+import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard/user-dashboard.component';
 import { audit } from 'rxjs';
 import { authGuard } from './routeGuards/auth/auth.guard';
 
@@ -25,5 +26,7 @@ export const routes: Routes = [
     {path: 'instructors/:id', component:InstructorDetailsComponent},
     {path: 'classlocations/:id', component:ClassLocationDetailsComponent},
     {path: 'classes/:id', component:ClassDetailsComponent},
-    {path: 'login', component:LoginComponent}
+    {path: 'login', component:LoginComponent},
+    {path: 'userdashboard', component: UserDashboardComponent, canActivate: [authGuard] },
+
 ];

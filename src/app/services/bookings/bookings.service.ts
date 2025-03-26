@@ -16,6 +16,9 @@ export class BookingsService {
   }
 
   cancelBooking(userId: string, classId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cancel`, { userId, classId });
+    return this.http.request('DELETE', `${this.apiUrl}/cancel`, {
+      body: { userId, classId }
+    });
   }
+  
 }

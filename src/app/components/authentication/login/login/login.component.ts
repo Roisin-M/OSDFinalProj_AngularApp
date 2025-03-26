@@ -13,13 +13,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatSnackBarModule, MatInputModule, ReactiveFormsModule, 
-    FormsModule, MatButtonModule],
+  imports: [MatCardModule,MatSnackBarModule, MatInputModule, ReactiveFormsModule, 
+    FormsModule, MatButtonModule, MatSelectModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -38,6 +39,7 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['user'],
     });
   }
 
@@ -49,8 +51,8 @@ export class LoginComponent {
     const values = this.loginForm.value;
     console.log('submit with ');
     console.table(values);
-    this.authService.login(this.email, this.password).
-    subscribe({
+    this.authService.login(this.email, this.password, this.role)
+    .subscribe({
       next: response  =>
        {
       this.authService.openErrorSnackBar('success: You have logged in'), 
@@ -71,6 +73,10 @@ export class LoginComponent {
   get password() {
     return this.loginForm.get('password')?.value;
   }
+  get role() {
+    return this.loginForm.get('role')?.value;
+  }
+  
 
   openErrorSnackBar(message: string): void {
     this.snackBar.open(message, 'Dismiss', {
