@@ -9,7 +9,6 @@
         </mat-card-header>
         <mat-card-content>
           <p><strong>Email:</strong> {{ user.email }}</p>
-          <p><strong>User ID:</strong> {{ user._id }}</p>
         </mat-card-content>
       </mat-card>
     }
@@ -35,7 +34,6 @@
               <button 
                 mat-flat-button 
                 color="warn" 
-                class="btn btn-red mb-3"
                 (click)="cancelBooking(cls._id)">
                 Cancel Booking
               </button>

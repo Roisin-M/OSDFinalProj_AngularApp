@@ -18,7 +18,7 @@
                 <p>Description : {{yogaClass.description}}</p>
                 <p>InstructorID : {{yogaClass.instructorId}}</p>
                 <p>Class Location ID : {{yogaClass.classLocationId}}</p>
-                <p>Date : {{yogaClass.date}}</p>
+                <p>Date : {{yogaClass.date | date: 'fullDate'}}</p>
                 <p>Class start : {{yogaClass.startTime}}</p>
                 <p>Class end : {{yogaClass.endTime }}</p>
                 <p>Class Format : {{yogaClass.classFormat}}</p>
@@ -40,9 +40,18 @@
                 </ul>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button (click)="editClass()" >Edit</button>
-                <button mat-flat-button color="error" (click)="deleteClass()" >Delete </button>
-                <button mat-flat-button color="primary" (click)="bookClass()">Book This Class</button>
+                <mat-card-actions>
+                    @if (isLoggedIn) {
+                      @if (isUser) {
+                        <button mat-flat-button color="primary" (click)="bookClass()">Book This Class</button>
+                      }
+                      @if (canEditOrDelete) {
+                        <button mat-raised-button color="accent" (click)="editClass()">Edit</button>
+                        <button mat-flat-button color="warn" (click)="deleteClass()">Delete</button>
+                      }
+                    }
+                  </mat-card-actions>
+                  
             </mat-card-actions>
         </mat-card>
     } 

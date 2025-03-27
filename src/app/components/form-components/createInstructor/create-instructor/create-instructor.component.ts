@@ -53,7 +53,13 @@ export class CreateInstructorComponent {
           Validators.minLength(3)]),
         email: new FormControl('', [Validators.email, 
           Validators.required]),
-        yogaSpecialities: this.formBuilder.array([], Validators.required)
+          password: new FormControl('', [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(64),
+            Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/)
+          ]),
+        yogaSpecialities: this.formBuilder.array([], Validators.required),
       });
       
     }

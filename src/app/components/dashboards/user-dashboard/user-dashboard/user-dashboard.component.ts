@@ -6,11 +6,12 @@ import { Class } from '../../../../interfaces/class';
 import { MatCardModule } from '@angular/material/card';
 import { BookingsService } from '../../../../services/bookings/bookings.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [MatCardModule, MatButton],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.css'
 })

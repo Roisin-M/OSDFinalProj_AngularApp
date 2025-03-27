@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { AuthCustomService } 
 from '../../../../services/authentication/auth-custom.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +19,8 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatCardModule,MatSnackBarModule, MatInputModule, ReactiveFormsModule, 
+  imports: [MatCardModule,MatSnackBarModule, MatInputModule, 
+    ReactiveFormsModule, RouterLink,
     FormsModule, MatButtonModule, MatSelectModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

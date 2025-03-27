@@ -8,6 +8,9 @@ import { MatCardModule } from '@angular/material/card'
 import { MatButton, MatButtonModule } from '@angular/material/button'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthCustomService } from '../../../../services/authentication/auth-custom.service';
+import { User } from '../../../../interfaces/user';
+import { Instructor } from '../../../../interfaces/instructor';
 
 @Component({
   selector: 'app-class-location-details',
@@ -23,11 +26,20 @@ export class ClassLocationDetailsComponent {
   showForm:boolean=false;
   successMessage:string='';
 
+  currentUser$: Observable<User | Instructor | null>;
+  isAuthenticated$: Observable<boolean>;
+  
+
   constructor(
     private route: ActivatedRoute,
     private classLocationsService:ClassLocationsService,
     private router:Router,
-    private snackBar: MatSnackBar){}
+    private snackBar: MatSnackBar,
+    private authService: AuthCustomService  
+  ){
+    this.currentUser$ = this.authService.currentUser$;
+    this.isAuthenticated$ = this.authService.isAuthenticated$;
+  }
 
     //get by id from service
     ngOnInit():void{
@@ -47,6 +59,21 @@ export class ClassLocationDetailsComponent {
           }
         })
       }
+    }
+
+    get currentUser(): User | Instructor | null {
+      return this.authService.currentUser$.value;
+    }
+    get isLoggedIn(): boolean {
+      return this.authService.isAuthenticated$.value;
+    }
+  
+    get isInstructor(): boolean {
+      return this.currentUser?.role === 'instructor';
+    }
+  
+    get isUser(): boolean {
+      return this.currentUser?.role === 'user';
     }
 
     editClassLocation():void{

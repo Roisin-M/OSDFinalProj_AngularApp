@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card'
 import { MatButton, MatButtonModule } from '@angular/material/button'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthCustomService } from '../../../../services/authentication/auth-custom.service';
 
 @Component({
   selector: 'app-instructor-details',
@@ -29,7 +30,8 @@ export class InstructorDetailsComponent {
   constructor(private route: ActivatedRoute,
     private instructorsService: InstructorsService,
     private router:Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthCustomService
   ){}
 
   //get by id from service
@@ -93,6 +95,15 @@ export class InstructorDetailsComponent {
       this.openErrorSnackBar('An unknown error occurred. Please try again later');
     }
   }
+
+  get isCurrentInstructor(): boolean {
+    return this.instructor?._id === this.authService.currentUser$.value?._id;
+  }
+  
+  get isInstructor(): boolean {
+    return this.authService.currentUser$.value?.role === 'instructor';
+  }
+  
 
   openErrorSnackBar(message: string): void {
     this.snackBar.open(message, 'Dismiss', {

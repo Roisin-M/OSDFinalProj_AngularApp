@@ -53,3 +53,15 @@ button {
     font-size: 0.9rem;
   }
 }
+
+.register-instructor-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-instructor-container a {
+  margin-top: 8px;
+  font-weight: 500;
+  text-transform: none;
+}
+

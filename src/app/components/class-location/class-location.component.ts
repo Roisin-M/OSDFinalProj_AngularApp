@@ -5,6 +5,11 @@ import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+import { Instructor } from '../../interfaces/instructor';
+import { User } from '../../interfaces/user';
+import { AuthCustomService } from '../../services/authentication/auth-custom.service';
 
 @Component({
   selector: 'app-class-location',
@@ -18,6 +23,8 @@ export class ClassLocationComponent {
   filteredClassLocations: ClassLocation[] = [];
   message: string='';
   classFormats = Object.values(ClassFormat);
+  currentUser$: Observable<User | Instructor | null>;
+  isAuthenticated$: Observable<boolean>;
 
   classFormatFilterForm: FormGroup; //form for filtering
 
@@ -25,11 +32,24 @@ export class ClassLocationComponent {
   //constuctor with injection
   constructor(
     private classLocationService: ClassLocationsService,
-    private fb: FormBuilder){
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private authService: AuthCustomService){
+      this.currentUser$ = this.authService.currentUser$;
+      this.isAuthenticated$ = this.authService.isAuthenticated$;
       // Initialize the filter form
-    this.classFormatFilterForm = this.fb.group({
-      selectedClassFormat: [null], // No default selection
-    });
+      this.classFormatFilterForm = this.fb.group({
+        selectedClassFormat: [null], // No default selection
+      });
+    }
+    get currentUser(): User | Instructor | null {
+      return this.authService.currentUser$.value;
+    }
+    get isLoggedIn(): boolean {
+      return this.authService.isAuthenticated$.value;
+    }
+    get isInstructor(): boolean {
+      return this.currentUser?.role === 'instructor';
     }
   
   //ngonit method

@@ -34,7 +34,6 @@
         font-size: 0.9rem;
       }
       
-      /* Actions styling */
       mat-card-actions {
         display: flex;
         justify-content: center;

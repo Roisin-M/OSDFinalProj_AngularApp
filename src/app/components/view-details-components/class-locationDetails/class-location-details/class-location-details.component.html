@@ -24,8 +24,12 @@
                 </ul>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button (click)="editClassLocation()" >Edit</button>
-                <button mat-flat-button color="error" (click)="deleteClassLocation()" >Delete </button>
+                @if(isLoggedIn){
+                    @if(isInstructor){
+                        <button mat-raised-button (click)="editClassLocation()" >Edit</button>
+                        <button mat-flat-button color="error" (click)="deleteClassLocation()" >Delete </button>
+                    }
+                }
         </mat-card-actions>
         </mat-card>
     } 

@@ -25,8 +25,12 @@
                 </ul>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button (click)="editInstructor()" >Edit</button>
-                <button mat-flat-button color="error" (click)="deleteInstructor()" >Delete </button>
+                @if(isInstructor){
+                    @if(isCurrentInstructor){
+                        <button mat-raised-button color="accent" (click)="editInstructor()" >Edit Profile</button>
+                        <button mat-flat-button color="warn" (click)="deleteInstructor()" >Delete My Account</button>
+                    }
+                }
         </mat-card-actions>
         </mat-card>
     } 
@@ -34,32 +38,3 @@
 @else {
     <p>Loading instructor details...</p>
 }
-
-<!-- @if(instructor$ | async; as instructor){
-    @if(showForm){
-        <div>
-            <app-create-instructor [instructor]="instructor"></app-create-instructor>
-        </div>
-    }
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>Instructor Details</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-                <p>Name: {{ instructor.name }}</p>
-                <p>Email: {{ instructor.email }}</p>
-                
-                @for (speciality of instructor.yogaSpecialities; track speciality ;  let i=$index; ){
-                    <p>{{speciality}}</p>
-                }
-
-        </mat-card-content>
-        <mat-card-actions>
-                <button mat-raised-button (click)="editInstructor()" >Edit</button>
-                <button mat-flat-button color="error" (click)="deleteInstructor()" >Delete </button>
-        </mat-card-actions>
-    </mat-card>
-} 
-@else{
-    <p>Loading instructor details...</p>
-} -->

@@ -10,11 +10,14 @@ import { MatButton, MatButtonModule } from '@angular/material/button'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthCustomService } from '../../../../services/authentication/auth-custom.service';
+import { User } from '../../../../interfaces/user';
+import { Instructor } from '../../../../interfaces/instructor';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-class-details',
   standalone: true,
-  imports: [MatCardModule, MatButton, CreateClassComponent],
+  imports: [MatCardModule, MatButton, CreateClassComponent, DatePipe],
   templateUrl: './class-details.component.html',
   styleUrl: './class-details.component.css'
 })
@@ -23,6 +26,8 @@ export class ClassDetailsComponent {
   yogaClass:Class | null=null;
   showForm: boolean = false;
   successMessage:string='';
+  currentUser$: Observable<User | Instructor | null>;
+  isAuthenticated$: Observable<boolean>;
   //temporary user id
   //userId = '67656f160a8c1c2c7f1fcfd2';
 
@@ -32,11 +37,33 @@ export class ClassDetailsComponent {
     private router:Router,
     private snackBar: MatSnackBar,
     private authService: AuthCustomService
-  ){}
+  ){
+    this.currentUser$ = this.authService.currentUser$;
+    this.isAuthenticated$ = this.authService.isAuthenticated$;
+  }
 
   get userId(): string | undefined{
     return this.authService.currentUser$.value?._id ?? undefined;
   }
+  get currentUser(): User | Instructor | null {
+    return this.authService.currentUser$.value;
+  }
+  get isLoggedIn(): boolean {
+    return this.authService.isAuthenticated$.value;
+  }
+  get isInstructor(): boolean {
+    return this.currentUser?.role === 'instructor';
+  }
+  get isUser(): boolean {
+    return this.currentUser?.role === 'user';
+  }
+  get canEditOrDelete(): boolean {
+    return (
+      this.isInstructor &&
+      this.yogaClass?.instructorId === this.currentUser?._id
+    );
+  }
+  
 
   //get by id from service
     ngOnInit():void{

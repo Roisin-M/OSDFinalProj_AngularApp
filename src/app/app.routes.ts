@@ -22,7 +22,7 @@ export const routes: Routes = [
     {path: 'instructors', component: InstructorComponent },
     {path: 'classlocations', component: ClassLocationComponent},
     {path: 'classes', component:ClassComponent},
-    {path: 'createinstructor', component:CreateInstructorComponent, canActivate: [authGuard]},
+    {path: 'createinstructor', component:CreateInstructorComponent},
     {path: 'createclasslocation', component:CreateClassLocationComponent, canActivate: [authGuard, roleGuard('instructor')]},
     {path: 'createclass', component:CreateClassComponent, canActivate: [roleGuard('instructor')]},
     {path: 'instructors/:id', component:InstructorDetailsComponent},

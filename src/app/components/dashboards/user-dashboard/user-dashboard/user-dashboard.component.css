@@ -54,11 +54,18 @@
     font-size: 1rem;
     margin-top: 40px;
   }
-  
-  /* Reuse your red button class */
-  .btn-red {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
+
+  mat-card-actions button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(244, 53, 66, 0.832);
   }
   
+  mat-card-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  mat-card-actions button {
+    margin: 0 10px;
+  }

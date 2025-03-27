@@ -54,11 +54,42 @@
     font-size: 1rem;
     margin-top: 40px;
   }
-  
-  /* Reuse your red button class */
+
   .btn-red {
     background-color: #ff4d4d;
     color: white;
     border: none;
   }
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  
+  .action-buttons button {
+    flex: 1;
+    margin: 0 5px;
+  }
+  .profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .btn-space {
+    min-width: 140px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  .mat-flat-button:hover,
+.mat-stroked-button:hover {
+  transform: scale(1.03);
+  transition: transform 0.2s ease-in-out;
+}
+
+  
+  
   
