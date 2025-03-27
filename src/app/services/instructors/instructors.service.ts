@@ -4,6 +4,7 @@ import { InstructorComponent } from '../../components/instructor/instructor.comp
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import { Instructor } from '../../interfaces/instructor';
 import { environment } from '../../../environments/environment.development';
+import { Class } from '../../interfaces/class';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,16 @@ export class InstructorsService {
       catchError(this.handleError)
     );
   }
-
+  // takes an id and sends a request for that instructors classes associated
+  getInstructorClasses(id: string): Observable<{ classes: Class[] }> {
+    const uri = `${this.instructorUri}/${id}/classes`;
+    return this.http.get<{ classes: Class[] }>(uri)
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
+  }
+  
   //update instructor with id
   updateInstructor(id: string, instructor:Instructor):Observable<Instructor>{
     console.log('Subscribing to update/'+ id);

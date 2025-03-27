@@ -1,58 +1,65 @@
+<!-- NAVIGATION -->
 <nav class="navbar navbar-expand-lg navbar-custom">
   <div class="container-fluid">
     <a class="navbar-brand navbar-title">
       <h1>Yoga Studio Manager</h1>
     </a>
-    <button 
-      class="navbar-toggler" 
-      type="button" 
-      data-bs-toggle="collapse" 
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav" 
-      aria-expanded="false" 
-      aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNav">
-      <!-- Left Navigation Links -->
+      <!-- Left Nav Links -->
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="" routerLinkActive="active">Home</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/instructors" routerLinkActive="active">Instructors</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="classlocations" routerLinkActive="active">Class Locations</a>
+          <a class="nav-link" routerLink="/classlocations" routerLinkActive="active">Class Locations</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="classes" routerLinkActive="active">Classes</a>
+          <a class="nav-link" routerLink="/classes" routerLinkActive="active">Classes</a>
         </li>
       </ul>
-      <!-- Login Section -->
+
+      <!-- Right Login Section -->
       <div class="navbar-login-section">
         <ul class="navbar-nav">
-          @if (isAuthenticated$ | async) {
+
+          @if (isLoggedIn) {
             <li class="nav-item">
-              <span class="nav-link">Welcome back, {{ (currentUser$ | async)?.name }}!</span>
+              <span class="nav-link">Welcome back, {{ currentUser?.name }}!</span>
             </li>
             <li class="nav-item">
               <a class="nav-link" (click)="logout()">Logout</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/userdashboard" routerLinkActive="active">Dashboard</a>
-            </li>
-          }
-          @else {
+
+            @if (isInstructor) {
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/instructordashboard" routerLinkActive="active">Instructor Dashboard</a>
+              </li>
+            }
+
+            @if (isUser) {
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/userdashboard" routerLinkActive="active">User Dashboard</a>
+              </li>
+            }
+
+          } @else {
             <li class="nav-item">
               <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
             </li>
           }
+
         </ul>
       </div>
     </div>
   </div>
 </nav>
-<div>
-  <router-outlet></router-outlet>
-</div>
+
+<router-outlet></router-outlet>

@@ -13,6 +13,8 @@ import { LoginComponent } from './components/authentication/login/login/login.co
 import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard/user-dashboard.component';
 import { audit } from 'rxjs';
 import { authGuard } from './routeGuards/auth/auth.guard';
+import { roleGuard } from './routeGuards/role/role.guard';
+import { InstructorDashboardComponent } from './components/dashboards/instructor-dashboard/instructor-dashboard/instructor-dashboard.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -21,12 +23,13 @@ export const routes: Routes = [
     {path: 'classlocations', component: ClassLocationComponent},
     {path: 'classes', component:ClassComponent},
     {path: 'createinstructor', component:CreateInstructorComponent, canActivate: [authGuard]},
-    {path: 'createclasslocation', component:CreateClassLocationComponent, canActivate: [authGuard]},
-    {path: 'createclass', component:CreateClassComponent},
+    {path: 'createclasslocation', component:CreateClassLocationComponent, canActivate: [authGuard, roleGuard('instructor')]},
+    {path: 'createclass', component:CreateClassComponent, canActivate: [roleGuard('instructor')]},
     {path: 'instructors/:id', component:InstructorDetailsComponent},
     {path: 'classlocations/:id', component:ClassLocationDetailsComponent},
     {path: 'classes/:id', component:ClassDetailsComponent},
     {path: 'login', component:LoginComponent},
-    {path: 'userdashboard', component: UserDashboardComponent, canActivate: [authGuard] },
+    {path: 'userdashboard', component: UserDashboardComponent, canActivate: [authGuard, roleGuard('user') ]},
+    { path: 'instructordashboard', component: InstructorDashboardComponent, canActivate: [authGuard, roleGuard('instructor')] },
 
 ];

@@ -28,13 +28,20 @@ export class UserDashboardComponent {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.authService.currentUser$.value;
-    const userId = this.user?._id;
-
-    if (userId) {
-      this.loadBookedClasses(userId);
+    const currentUser = this.authService.currentUser$.value;
+  
+    if (currentUser && currentUser.role === 'user') {
+      const userT = currentUser as User;
+      this.user = userT;
+  
+      if (userT._id) {
+        this.loadBookedClasses(userT._id);
+      } else {
+        console.error('User ID is undefined');
+      }
     }
   }
+  
 
   loadBookedClasses(userId: string): void {
     this.classService.getClasses().subscribe((classes: Class[]) => {

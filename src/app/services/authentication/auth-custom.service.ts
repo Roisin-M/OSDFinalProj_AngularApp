@@ -5,13 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Instructor } from '../../interfaces/instructor';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthCustomService {
 
-  readonly currentUser$ : BehaviorSubject<User | null> ;
+  readonly currentUser$ : BehaviorSubject<User | Instructor |null> ;
   readonly isAuthenticated$ : BehaviorSubject<boolean>;
   
   constructor(
@@ -24,7 +25,7 @@ export class AuthCustomService {
     // (JSON.parse(localStorage.getItem('user') || '{}'));
     const savedUser = localStorage.getItem('user');
     const parsedUser = savedUser ? JSON.parse(savedUser) : null;
-    this.currentUser$ = new BehaviorSubject<User | null>(parsedUser);
+    this.currentUser$ = new BehaviorSubject<User | Instructor |null>(parsedUser);
 
 
     const token = localStorage.getItem('token') || '';
@@ -72,7 +73,7 @@ export class AuthCustomService {
           const expires = payload.exp *1000
           localStorage.setItem('token', body.accessToken);
           localStorage.setItem('user', JSON.stringify(payload));
-          this.currentUser$.next(payload as User);
+          this.currentUser$.next(payload);
         //  this.token$.next(body.accessToken);
           this.isAuthenticated$.next(true);
           this.startAuthenticateTimer(expires);
