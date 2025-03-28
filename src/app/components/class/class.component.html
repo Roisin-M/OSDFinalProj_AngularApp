@@ -1,8 +1,8 @@
-<h1>Our Classes</h1>
-<p>{{message}}</p>
+<h1 class="section-heading">🧘‍♀️ Our Classes</h1>
+<p class="sub-message">{{ message }}</p>
 
-<!--Filter Section-->
-<div class="filter-section">
+<!-- Filter + Action Section -->
+<div class="filter-action-wrapper">
   <mat-form-field appearance="outline">
     <mat-label>Filter by Yoga Speciality</mat-label>
     <mat-select [(ngModel)]="selectedSpecialities" multiple>
@@ -11,48 +11,45 @@
       }
     </mat-select>
   </mat-form-field>
-  <mat-card-actions>
-    <!-- <button mat-raised-button class="btn btn-primary mb-3" (click)="filterClasses()">Filter</button> -->
-    <button mat-raised-button class="btn btn-red mb-3" (click)="resetFilter()">Reset to All</button>
-  </mat-card-actions>
-  
+
+  <div class="button-row-centered">
+    <!-- <button mat-flat-button color="primary" (click)="filterClasses()">Filter</button> -->
+    <button mat-flat-button class="btn-red" (click)="resetFilter()">Reset to All</button>
+
+    @if (isLoggedIn && isInstructor) {
+      <button mat-flat-button color="accent" routerLink="/createclass">
+        ➕ New Class
+      </button>
+    }
+  </div>
 </div>
-@if(isLoggedIn){
-  @if(isInstructor){
-    <!--New Class Button-->
-    <button class="btn btn-primary mb-3" routerLink="/createclass">
-      New Class
-    </button>
-  }
-}
-<!--Container for filtered classes-->
-<div class="container responsive-grid">
+
+<!-- Class List -->
+<div class="responsive-grid">
   @if (filteredClasses().length > 0) {
     @for (u of filteredClasses(); track u._id) {
       <mat-card>
         <mat-card-header>Details</mat-card-header>
         <mat-card-content>
-          <p>Description : {{u.description}}</p>
-          <p>InstructorID : {{u.instructorId}}</p>
-          <p>Class Location ID : {{u.classLocationId}}</p>
-          <p>Date : {{u.date | date: 'fullDate'}}</p>
-          <p>Class start : {{u.startTime}}</p>
-          <p>Class end : {{u.endTime }}</p>
-          <p>Class Format : {{u.classFormat}}</p>
-          <p>Spaces Available : {{u.spacesAvailable}}</p>
-          <p>Specialities: {{ u.type.join(', ') }}</p>
-          <p>Class Level : {{u.level.join(', ')}}</p>
-          <p>Class Focus : {{u.category.join(', ')}}</p>
-          <p>Users Attending: {{u.userIds}}</p>
-          <mat-card-actions>
-            <a mat-raised-button color="primary" [routerLink]="['/classes', u._id]">
-              VIEW DETAILS
-            </a>
-          </mat-card-actions>
+          <p><strong>Description:</strong> {{ u.description }}</p>
+          <p><strong>Location Name:</strong> {{ getLocationName(u.classLocationId) }}</p>
+          <p><strong>Location Address:</strong> {{ getLocationAddress(u.classLocationId) }}</p>
+          <p><strong>Date:</strong> {{ u.date | date: 'fullDate' }}</p>
+          <p><strong>Class start:</strong> {{ u.startTime }}</p>
+          <p><strong>Class end:</strong> {{ u.endTime }}</p>
+          <p><strong>Class Format:</strong> {{ u.classFormat }}</p>
+          <p><strong>Specialities:</strong> {{ u.type.join(', ') }}</p>
+          <p><strong>Class Level:</strong> {{ u.level.join(', ') }}</p>
+          <p><strong>Class Focus:</strong> {{ u.category.join(', ') }}</p>
         </mat-card-content>
+        <mat-card-actions>
+          <a mat-raised-button color="primary" [routerLink]="['/classes', u._id]">
+            VIEW DETAILS
+          </a>
+        </mat-card-actions>
       </mat-card>
     }
   } @else {
-    <p>No classes found for the selected speciality.</p>
+    <p class="no-bookings-message">No classes found for the selected speciality.</p>
   }
 </div>

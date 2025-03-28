@@ -1,8 +1,9 @@
-<h1>Our Instructors</h1>
-<p>{{message}}</p>
+<h1 class="section-heading">🧘‍♀️ Our Instructors</h1>
+<p class="sub-message">{{ message }}</p>
 
 <!-- Filter Section -->
-<div class="filter-section">
+<!-- Filter Section -->
+<div class="filter-action-wrapper">
   <mat-form-field appearance="outline">
     <mat-label>Filter by Yoga Speciality</mat-label>
     <mat-select [(ngModel)]="selectedSpecialities" multiple>
@@ -11,37 +12,34 @@
       }
     </mat-select>
   </mat-form-field>
-  <mat-card-actions>
-    <button mat-raised-button class="btn btn-primary mb-3" (click)="filterInstructors()">Filter</button>
-    <button mat-raised-button class="btn btn-red mb-3" (click)="resetFilter()">Reset to All</button>
-  </mat-card-actions>
-  
+
+  <div class="button-row-centered">
+    <button mat-flat-button color="primary" (click)="filterInstructors()">Filter</button>
+    <button mat-flat-button class="btn-red" (click)="resetFilter()">Reset to All</button>
+  </div>
 </div>
 
-<!-- New Instructor Button -->
-<button class="btn btn-primary mb-3" routerLink="/createinstructor">
-    New Instructor
-  </button>
 
 <!-- Container for filtered instructors -->
-<div class="container responsive-grid">
+<div class="responsive-grid">
   @if (filteredInstructors.length > 0) {
     @for (u of filteredInstructors; track u._id) {
       <mat-card>
-        <mat-card-header>Details</mat-card-header>
+        <mat-card-header>
+          <mat-card-title>{{ u.name }}</mat-card-title>
+        </mat-card-header>
         <mat-card-content>
-          <p>Name: {{ u.name }}</p>
-          <p>Email: {{ u.email }}</p>
-          <p>Specialities: {{ u.yogaSpecialities.join(', ') }}</p>
-          <mat-card-actions>
-            <a mat-raised-button color="primary" [routerLink]="['/instructors', u._id]">
-              VIEW DETAILS
-            </a>
-          </mat-card-actions>
+          <p><strong>Email:</strong> {{ u.email }}</p>
+          <p><strong>Specialities:</strong> {{ u.yogaSpecialities.join(', ') }}</p>
         </mat-card-content>
+        <mat-card-actions>
+          <a mat-stroked-button color="primary" [routerLink]="['/instructors', u._id]">
+            View Details
+          </a>
+        </mat-card-actions>
       </mat-card>
     }
   } @else {
-    <p>No instructors found for the selected speciality.</p>
+    <p class="no-bookings-message">No instructors found for the selected speciality.</p>
   }
 </div>

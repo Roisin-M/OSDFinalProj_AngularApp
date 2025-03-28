@@ -4,86 +4,91 @@
   <p class="success-message">{{ successMessage }}</p>
 }
 
-<form [formGroup]="createClassLocationForm" (ngSubmit)="onSubmit()">
-  <!--Name Form Field-->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Name: </mat-label>
-    <input id="name" type="text" matInput formControlName="name">
-    @if(!name?.value){
-        <mat-hint>Must be at least 3 chars</mat-hint> 
-    }
-    @if (name?.hasError('required') ){
-        <mat-error>Name is required </mat-error>
-    }
-    @else if (name?.hasError('minlength')) {
-        <mat-error>Name Must be at least 3 chars </mat-error>
-    }
-
-  </mat-form-field>
-    <!--MaxCapacity Form Field-->
-    <mat-form-field  appearance="outline" class="full-width">
-        <mat-label>Max Capacity: </mat-label>
-        <input matInput id="maxCapacity" type="number" formControlName="maxCapacity">
-      @if(!maxCapacity?.value){
-        <mat-hint>At least 5 capacity</mat-hint> 
+<div class="form-wrapper">
+  <form [formGroup]="createClassLocationForm" (ngSubmit)="onSubmit()">
+    <!--Name Form Field-->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name: </mat-label>
+      <input id="name" type="text" matInput formControlName="name">
+      @if(!name?.value){
+          <mat-hint>Must be at least 3 chars</mat-hint> 
       }
-      @if (maxCapacity?.hasError('required') ){
-          <mat-error>Max Capacity is required </mat-error>
+      @if (name?.hasError('required') ){
+          <mat-error>Name is required </mat-error>
       }
-      @else if (maxCapacity?.hasError('min')) {
-          <mat-error>Max Capacity must be greater than or equal to 5 </mat-error>
+      @else if (name?.hasError('minlength')) {
+          <mat-error>Name Must be at least 3 chars </mat-error>
       }
+  
     </mat-form-field>
-      <!--Location Form Field-->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Location: </mat-label>
-    <input id="location" type="text" matInput formControlName="location">
-    @if(!location?.value){
-      <mat-hint>Must be at least 5 chars</mat-hint> 
-  }
-  @if (location?.hasError('required') ){
-      <mat-error>Location is required </mat-error>
-  }
-  @else if (location?.hasError('minlength')) {
-      <mat-error>Location Must be at least 5 chars </mat-error>
-  }
-  </mat-form-field>
-
-    <!--Class Format Section-->
-    <fieldset>
-      <legend>Class formats</legend>
-      <!-- Section Validation Message -->
-      @if (classFormatsArray.invalid && !classFormatsArray.touched) {
-        <p class="error-message">At least one class Format</p>
-      }
-      <div formArrayName="classFormats">
-          @for (formatControl of classFormatsArray.controls; let i = $index; track formatControl) {
-              <fieldset [formGroupName]="i">
-                <legend>Class Format {{ i + 1 }}</legend>
-                
-                <!-- Class Format Dropdown -->
-                <mat-form-field appearance="outline" class="small-width">
-                  <mat-label>Class Format</mat-label>
-                  <mat-select [formControl]="formatControl">
-                    @for (classFormat of classFormats; track classFormat) {
-                      <mat-option [value]="classFormat">{{ classFormat }}</mat-option>
+      <!--MaxCapacity Form Field-->
+      <mat-form-field  appearance="outline" class="full-width">
+          <mat-label>Max Capacity: </mat-label>
+          <input matInput id="maxCapacity" type="number" formControlName="maxCapacity">
+        @if(!maxCapacity?.value){
+          <mat-hint>At least 5 capacity</mat-hint> 
+        }
+        @if (maxCapacity?.hasError('required') ){
+            <mat-error>Max Capacity is required </mat-error>
+        }
+        @else if (maxCapacity?.hasError('min')) {
+            <mat-error>Max Capacity must be greater than or equal to 5 </mat-error>
+        }
+      </mat-form-field>
+        <!--Location Form Field-->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Location: </mat-label>
+      <input id="location" type="text" matInput formControlName="location">
+      @if(!location?.value){
+        <mat-hint>Must be at least 5 chars</mat-hint> 
+    }
+    @if (location?.hasError('required') ){
+        <mat-error>Location is required </mat-error>
+    }
+    @else if (location?.hasError('minlength')) {
+        <mat-error>Location Must be at least 5 chars </mat-error>
+    }
+    </mat-form-field>
+  
+      <!--Class Format Section-->
+      <fieldset class="form-array-item">
+        <legend>Class formats</legend>
+        <!-- Section Validation Message -->
+        @if (classFormatsArray.invalid && !classFormatsArray.touched) {
+          <p class="error-message">At least one class Format</p>
+        }
+        <div formArrayName="classFormats">
+            @for (formatControl of classFormatsArray.controls; let i = $index; track formatControl) {
+                <fieldset [formGroupName]="i">
+                  <legend>Class Format {{ i + 1 }}</legend>
+                  
+                  <!-- Class Format Dropdown -->
+                  <mat-form-field appearance="outline" class="small-width">
+                    <mat-label>Class Format</mat-label>
+                    <mat-select [formControl]="formatControl">
+                      @for (classFormat of classFormats; track classFormat) {
+                        <mat-option [value]="classFormat">{{ classFormat }}</mat-option>
+                      }
+                    </mat-select>
+                    @if (formatControl?.hasError('required')) {
+                      <mat-error>Class Format is required</mat-error>
                     }
-                  </mat-select>
-                  @if (formatControl?.hasError('required')) {
-                    <mat-error>Class Format is required</mat-error>
-                  }
-                </mat-form-field>
-      
-                <!-- Remove Yoga Speciality Button -->
-                <button mat-raised-button color="warn" type="button" (click)="removeClassFormat(i)">
-                  Remove
-                </button>
-              </fieldset>
-            }
+                  </mat-form-field>
+        
+                  <!-- Remove Yoga Speciality Button -->
+                  <button mat-raised-button color="warn" type="button" (click)="removeClassFormat(i)">
+                    Remove
+                  </button>
+                </fieldset>
+              }
+        </div>
+      </fieldset>
+      <div>
+          <button mat-raised-button color="primary" type="button" (click)="addClassFormat()">Add Class Format</button>
+          <button  mat-raised-button color="accent" type="submit" [disabled]="createClassLocationForm.invalid" >Create</button>
       </div>
-    </fieldset>
-    <div>
-        <button mat-raised-button color="primary" type="button" (click)="addClassFormat()">Add Class Format</button>
-        <button  mat-raised-button color="accent" type="submit" [disabled]="createClassLocationForm.invalid" >Create</button>
-    </div>
-</form>
+  </form>
+  
+</div>
+
+

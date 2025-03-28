@@ -1,44 +1,41 @@
-<h1>Filter by Class Format</h1>
-<div class="container">
-  <!-- Radio Button Group -->
-  <form [formGroup]="classFormatFilterForm" (ngSubmit)="onFilter()">
-    <fieldset>
-      <legend>Select Class Format</legend>
-      <mat-radio-group formControlName="selectedClassFormat">
-        @for (format of classFormats; track format) {
-          <mat-radio-button [value]="format">{{ format }}</mat-radio-button>
-        }
-      </mat-radio-group>
-    </fieldset>
-  
-    <!-- Buttons -->
-     <mat-card-actions>
-       <button mat-raised-button class="btn btn-primary mb-3" type="submit">Filter</button>
-       <button mat-raised-button class="btn btn-red mb-3" type="button" (click)="resetFilter()">Reset</button>
-     </mat-card-actions>
+<h1>🏠 Our Locations</h1>
+
+<!-- Filter Section with Centered Alignment -->
+<div class="filter-action-wrapper">
+  <form [formGroup]="classFormatFilterForm" (ngSubmit)="onFilter()" class="filter-form-centered">
+    <mat-radio-group formControlName="selectedClassFormat" class="class-format-radio-group">
+      @for (format of classFormats; track format) {
+        <mat-radio-button [value]="format">{{ format }}</mat-radio-button>
+      }
+    </mat-radio-group>
+
+    <div class="button-row-centered">
+      <button mat-flat-button color="primary" type="submit" style="margin-top: 0;">Filter</button>
+      <button mat-flat-button class="btn-red" type="button" (click)="resetFilter()">Reset</button>
+    </div>
   </form>
 
-</div>
-@if(isLoggedIn){
-  @if(isInstructor){
-    <!-- New Class Location Button -->
-    <button class="btn btn-primary mb-3" routerLink="/createclasslocation">
-      Add Location
-    </button>
-  }
-}
+  @if (isLoggedIn && isInstructor) {
 
-<!-- Container for filtered class locations -->
-<div class="container responsive-grid">
+      <button mat-flat-button color="accent" routerLink="/createclasslocation">
+        ➕ Add Location
+      </button>
+
+  }
+</div>
+
+
+<!-- Class Location Results -->
+<div class="responsive-grid">
   @if (filteredClassLocations.length > 0) {
     @for (u of filteredClassLocations; track u._id) {
       <mat-card>
         <mat-card-header>Details</mat-card-header>
         <mat-card-content>
-          <p>Name: {{ u.name }}</p>
-          <p>Max Capacity: {{ u.maxCapacity }}</p>
-          <p>Location: {{ u.location }}</p>
-          <p>Formats: {{ u.classFormats.join(', ') }}</p>
+          <p><strong>Name:</strong> {{ u.name }}</p>
+          <p><strong>Max Capacity:</strong> {{ u.maxCapacity }}</p>
+          <p><strong>Location:</strong> {{ u.location }}</p>
+          <p><strong>Formats:</strong> {{ u.classFormats.join(', ') }}</p>
         </mat-card-content>
         <mat-card-actions>
           <a mat-raised-button color="primary" [routerLink]="['/classlocations', u._id]">
@@ -51,4 +48,3 @@
     <p>No class locations found for the selected format.</p>
   }
 </div>
-

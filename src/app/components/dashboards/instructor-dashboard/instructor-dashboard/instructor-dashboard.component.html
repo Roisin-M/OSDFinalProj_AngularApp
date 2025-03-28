@@ -1,6 +1,6 @@
 <div class="dashboard-container">
   @if (instructor) {
-    <mat-card class="mat-elevation-z3 user-info-card">
+    <mat-card>
       <mat-card-header>
         <mat-card-title>
           <span class="dashboard-title">👩‍🏫 Welcome, {{ instructor.name }}</span>
@@ -30,7 +30,7 @@
   @if (classes.length > 0) {
     <div class="class-grid">
       @for (cls of classes; track cls._id) {
-        <mat-card class="mat-elevation-z2 class-card">
+        <mat-card>
           <mat-card-header>
             <mat-card-title>{{ cls.description }}</mat-card-title>
           </mat-card-header>

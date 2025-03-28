@@ -12,6 +12,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClassLocation } from '../../../../interfaces/class-location';
+import { ClassLocationsService } from '../../../../services/classLocations/class-locations.service';
+import { AuthCustomService } from '../../../../services/authentication/auth-custom.service';
 
 @Component({
   selector: 'app-create-class',
@@ -26,6 +29,7 @@ export class CreateClassComponent {
 
   @Input() classItem?: Class;
   successMessage: string = '';
+  classLocations: ClassLocation[] = [];
 
   createClassForm: FormGroup = new FormGroup({});
 
@@ -37,9 +41,12 @@ export class CreateClassComponent {
   constructor(private formBuilder: FormBuilder,
     private classService: ClassesService,
     private router: Router,
-    private snackBar: MatSnackBar) {}
+    private snackBar: MatSnackBar,
+    private classLocationService: ClassLocationsService,
+    private authService: AuthCustomService) {}
 
   ngOnInit(): void {
+    this.populateClassLocations();
     if (this.classItem) {
       this.initFormWithData();
     } else {
@@ -47,9 +54,26 @@ export class CreateClassComponent {
     }
   }
 
+   // 🔹 Fetch class locations here
+   private populateClassLocations(): void {
+    this.classLocationService.getClassLocations().subscribe({
+      next: (locations) => {
+        this.classLocations = locations;
+      },
+      error: (err) => {
+        console.error('Failed to fetch class locations:', err);
+        this.snackBar.open('Could not load class locations', 'Dismiss', {
+          duration: 3000
+        });
+      }
+    });
+  }
+
   private initEmptyForm(): void {
+    const instructorId = this.authService.currentUser$.value?._id;
+
     this.createClassForm = this.formBuilder.group({
-      instructorId: new FormControl('', Validators.required),
+      instructorId: new FormControl(instructorId, Validators.required),
       classLocationId: new FormControl('', Validators.required),
       description: new FormControl('', [Validators.required, Validators.minLength(10)]),
       date: new FormControl('', Validators.required),

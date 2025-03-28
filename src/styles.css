@@ -1,4 +1,373 @@
-/* You can add global styles to this file, and also import other style files */
+/* GLOBAL STYLES*/
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+  }
+  
+  .dashboard-container,
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+  
+  h1,
+  .section-heading {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+    color: #3f51b5;
+    font-weight: 600;
+  }
+  
+  /* CARD STYLES */
+  mat-card.mat-mdc-card {
+    background-color: #f5f5f5;
+    border-left: 5px solid #3f51b5;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 20px auto;
+    max-width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+  }
+  
+  mat-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  }
+  
+  mat-card-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #2e3c5d;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 8px 0;
+  }
+  
+  mat-card-content p,
+  mat-card-content li {
+    font-size: 0.95rem;
+    color: #424242;
+    margin: 6px 0;
+  }
+  
+  /*CARD ACTIONs*/
+  mat-card-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  
+  mat-card-actions button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(63, 81, 181, 0.2);
+  }
+  
+  /* GRID STYLES*/
+  .class-grid,
+  .responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    justify-items: center;
+  }
+  
+  /*  BUTTONS */
+  .btn-red {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+  }
+  
+  button,
+  mat-card-actions button {
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-weight: 500;
+  }
+  
+  .btn-space {
+    min-width: 140px;
+    text-transform: capitalize;
+  }
+  
+.filter-action-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  .filter-form-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .class-format-radio-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+ 
+  .button-row-centered {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  
+  /* NAVBAR */
+  .navbar-custom {
+    background-color: #e3f2fd;
+    padding: 12px 20px;
+    border-bottom: 1px solid #ccc;
+    font-size: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .navbar-brand h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2e3c5d;
+  }
+  
+  .nav-link {
+    color: #2e3c5d;
+    font-weight: 500;
+  }
+  
+  .nav-link:hover,
+  .nav-item.active .nav-link {
+    color: #3f51b5;
+    text-decoration: underline;
+  }
+  
+  .navbar-toggler {
+    border: none;
+  }
+  
+  .navbar-login-section {
+    display: flex;
+    align-items: center;
+    border-left: 1px solid #ccc;
+    padding-left: 15px;
+    margin-left: 15px;
+  }
+  
+  /* MOBILE NAVBAR */
+  @media (max-width: 768px) {
+    .navbar-login-section {
+      border-left: none;
+      padding-left: 0;
+      margin-left: 0;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .navbar-login-section .nav-link {
+      display: block;
+      margin: 5px 0;
+    }
+  }
+  
+  /* LOGIN PAGE  */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    background-color: #f4f4f9;
+    padding: 24px;
+  }
+  
+  .login-container mat-card.mat-mdc-card {
+    max-width: 450px;
+    width: 100%;
+  }
+
+  .login-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 32px 24px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .login-title {
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 600;
+    color: #3f51b5;
+    margin-bottom: 24px;
+  }
+  
+  .login-container mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .role-info {
+    text-align: center;
+    font-size: 0.95rem;
+    margin: 10px 0 20px;
+    color: #444;
+  }
+  
+  .register-instructor-container {
+    text-align: center;
+    margin-top: 24px;
+  }
+  
+  .register-instructor-container button {
+    text-transform: none;
+    font-weight: 500;
+    padding: 6px 12px;
+  }
+  
+  /*FOOTER  */
+  .app-footer {
+    background-color: #e3f2fd;
+    padding: 40px 20px 20px;
+    color: #2e3c5d;
+    font-size: 0.95rem;
+    border-top: 1px solid #ccc;
+    margin-top: 40px;
+  }
+  
+  .footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  
+  .footer-section {
+    flex: 1 1 250px;
+  }
+  
+  .footer-section h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #3f51b5;
+  }
+  
+  .footer-section p,
+  .footer-section a {
+    color: #444;
+    margin: 0;
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+  
+  .footer-section a:hover {
+    text-decoration: underline;
+    color: #007bff;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  /* FORMS */
+.form-wrapper {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+mat-form-field.full-width,
+mat-form-field.small-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+  mat-form-field.small-width {
+    width: 48%;
+  }
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-radius: 6px;
+}
+
+legend {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+button {
+  margin-top: 12px;
+}
+
+button[type="submit"] {
+  display: block;
+  margin: 24px auto 0;
+}
+
+fieldset > button {
+  margin-top: 8px;
+}
+@media (min-width: 1024px) {
+    .form-wrapper {
+      padding: 32px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    }
+  }
+
+  /* For dynamic form array items */
+.form-array-item {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background-color: #fafafa;
+    transition: border-color 0.2s ease;
+  }
+  
+  .form-array-item:hover {
+    border-color: #3f51b5;
+  }
+  
+  /* Optional label spacing */
+  .form-array-item legend {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+  
+  /* Reduce margin inside dynamic buttons */
+  .form-array-item button {
+    margin-top: 8px;
+  }

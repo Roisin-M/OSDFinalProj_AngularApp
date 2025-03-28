@@ -4,160 +4,166 @@
   <p class="success-message">{{ successMessage }}</p>
 }
 
-<form [formGroup]="createClassForm" (ngSubmit)="onSubmit()" >
-  <!-- Description Field -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Description: </mat-label>
-    <input id="description" type="text" matInput formControlName="description">
-    @if(!description?.value){
-        <mat-hint>Must be at least 10 chars</mat-hint> 
-    }
-    @if (description?.hasError('required') ){
-        <mat-error>Description is required </mat-error>
-    }
-    @else if (description?.hasError('minlength')) {
-        <mat-error>Description must be at least 10 characters</mat-error>
-    }
-  </mat-form-field>
-
-  <!-- Instructor ID -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Instructor ID</mat-label>
-    <input id="instructorId" type="text" matInput formControlName="instructorId">
-  </mat-form-field>
-
-  <!-- Class Location ID -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Class Location ID</mat-label>
-    <input id="classLocationId" type="text" matInput formControlName="classLocationId">
-  </mat-form-field>
-
-  <!-- Date -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Date</mat-label>
-    <input id="date" type="date" matInput formControlName="date">
-  </mat-form-field>
-
-  <!-- Start Time -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Start Time (HH:mm)</mat-label>
-    <input id="startTime" type="text" matInput formControlName="startTime">
-  </mat-form-field>
-
-  <!-- End Time -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>End Time (HH:mm)</mat-label>
-    <input id="endTime" type="text" matInput formControlName="endTime">
-  </mat-form-field>
-
-  <!-- Spaces Available -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Spaces Available</mat-label>
-    <input id="spacesAvailable" type="number" matInput formControlName="spacesAvailable">
-  </mat-form-field>
-
-  <!-- Class Format -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Class Format</mat-label>
-    <mat-select formControlName="classFormat">
-      @for (format of classFormats; track format) {
-        <mat-option [value]="format">{{ format }}</mat-option>
+<div class="form-wrapper">
+  <form [formGroup]="createClassForm" (ngSubmit)="onSubmit()" >
+    <!-- Description Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description: </mat-label>
+      <input id="description" type="text" matInput formControlName="description">
+      @if(!description?.value){
+          <mat-hint>Must be at least 10 chars</mat-hint> 
       }
-    </mat-select>
-  </mat-form-field>
+      @if (description?.hasError('required') ){
+          <mat-error>Description is required </mat-error>
+      }
+      @else if (description?.hasError('minlength')) {
+          <mat-error>Description must be at least 10 characters</mat-error>
+      }
+    </mat-form-field>
+  
+    <!-- Instructor ID -->
+    <!-- <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Instructor ID</mat-label>
+      <input id="instructorId" type="text" matInput formControlName="instructorId">
+    </mat-form-field> -->
 
-  <!-- Class Levels -->
-  <fieldset>
-    <legend>Class Levels</legend>
-    @if (classLevelsArray.invalid && !classLevelsArray.touched) {
-      <p class="error-message">At least one level is required.</p>
-    }
-    <div formArrayName="level">
-      @for (levelControl of classLevelsArray.controls; let i = $index; track levelControl) {
-        <fieldset [formGroupName]="i">
-          <legend>Level {{ i + 1 }}</legend>
-          <mat-form-field appearance="outline" class="small-width">
-            <mat-label>Class Level</mat-label>
-            <mat-select [formControl]="levelControl">
-              @for (level of classLevels; track level) {
-                <mat-option [value]="level">{{ level }}</mat-option>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Select Class Location</mat-label>
+      <mat-select formControlName="classLocationId">
+        @for (location of classLocations; track location._id) {
+          <mat-option [value]="location._id">{{ location.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  
+    <!-- Date -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date</mat-label>
+      <input id="date" type="date" matInput formControlName="date">
+    </mat-form-field>
+  
+    <!-- Start Time -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Start Time (HH:mm)</mat-label>
+      <input id="startTime" type="text" matInput formControlName="startTime">
+    </mat-form-field>
+  
+    <!-- End Time -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>End Time (HH:mm)</mat-label>
+      <input id="endTime" type="text" matInput formControlName="endTime">
+    </mat-form-field>
+  
+    <!-- Spaces Available -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Spaces Available</mat-label>
+      <input id="spacesAvailable" type="number" matInput formControlName="spacesAvailable">
+    </mat-form-field>
+  
+    <!-- Class Format -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Class Format</mat-label>
+      <mat-select formControlName="classFormat">
+        @for (format of classFormats; track format) {
+          <mat-option [value]="format">{{ format }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  
+    <!-- Class Levels -->
+    <fieldset class="form-array-item">
+      <legend>Class Levels</legend>
+      @if (classLevelsArray.invalid && !classLevelsArray.touched) {
+        <p class="error-message">At least one level is required.</p>
+      }
+      <div formArrayName="level">
+        @for (levelControl of classLevelsArray.controls; let i = $index; track levelControl) {
+          <fieldset [formGroupName]="i">
+            <legend>Level {{ i + 1 }}</legend>
+            <mat-form-field appearance="outline" class="small-width">
+              <mat-label>Class Level</mat-label>
+              <mat-select [formControl]="levelControl">
+                @for (level of classLevels; track level) {
+                  <mat-option [value]="level">{{ level }}</mat-option>
+                }
+              </mat-select>
+              @if (levelControl?.hasError('required')) {
+                  <mat-error>Level is required</mat-error>
               }
-            </mat-select>
-            @if (levelControl?.hasError('required')) {
-                <mat-error>Level is required</mat-error>
-            }
-          </mat-form-field>
-          <button mat-raised-button color="warn" type="button" (click)="removeClassLevel(i)">
-            Remove
-          </button>
-        </fieldset>
+            </mat-form-field>
+            <button mat-raised-button color="warn" type="button" (click)="removeClassLevel(i)">
+              Remove
+            </button>
+          </fieldset>
+        }
+      </div>
+      <button mat-raised-button color="primary" type="button" (click)="addClassLevel()">Add Class Level</button>
+    </fieldset>
+  
+    <!-- Yoga Specialities -->
+    <fieldset class="form-array-item">
+      <legend>Yoga Specialities</legend>
+      @if (yogaSpecialitiesArray.invalid && !yogaSpecialitiesArray.touched) {
+        <p class="error-message">At least one Yoga Speciality is required.</p>
       }
-    </div>
-    <button mat-raised-button color="primary" type="button" (click)="addClassLevel()">Add Class Level</button>
-  </fieldset>
-
-  <!-- Yoga Specialities -->
-  <fieldset>
-    <legend>Yoga Specialities</legend>
-    @if (yogaSpecialitiesArray.invalid && !yogaSpecialitiesArray.touched) {
-      <p class="error-message">At least one Yoga Speciality is required.</p>
-    }
-    <div formArrayName="type">
-      @for (specialityControl of yogaSpecialitiesArray.controls; let i = $index; track specialityControl) {
-        <fieldset [formGroupName]="i">
-          <legend>Yoga Speciality {{ i + 1 }}</legend>
-          <mat-form-field appearance="outline" class="small-width">
-            <mat-label>Yoga Speciality</mat-label>
-            <mat-select [formControl]="specialityControl">
-              @for (speciality of yogaSpecialities; track speciality) {
-                <mat-option [value]="speciality">{{ speciality }}</mat-option>
+      <div formArrayName="type">
+        @for (specialityControl of yogaSpecialitiesArray.controls; let i = $index; track specialityControl) {
+          <fieldset [formGroupName]="i">
+            <legend>Yoga Speciality {{ i + 1 }}</legend>
+            <mat-form-field appearance="outline" class="small-width">
+              <mat-label>Yoga Speciality</mat-label>
+              <mat-select [formControl]="specialityControl">
+                @for (speciality of yogaSpecialities; track speciality) {
+                  <mat-option [value]="speciality">{{ speciality }}</mat-option>
+                }
+              </mat-select>
+              @if (specialityControl?.hasError('required')) {
+                  <mat-error>Speciality is required</mat-error>
               }
-            </mat-select>
-            @if (specialityControl?.hasError('required')) {
-                <mat-error>Speciality is required</mat-error>
-            }
-          </mat-form-field>
-          <button mat-raised-button color="warn" type="button" (click)="removeYogaSpeciality(i)">
-            Remove
-          </button>
-        </fieldset>
+            </mat-form-field>
+            <button mat-raised-button color="warn" type="button" (click)="removeYogaSpeciality(i)">
+              Remove
+            </button>
+          </fieldset>
+        }
+      </div>
+      <button mat-raised-button color="primary" type="button" (click)="addYogaSpeciality()">Add Yoga Speciality</button>
+    </fieldset>
+  
+    <!-- Class Categories -->
+    <fieldset class="form-array-item">
+      <legend>Class Categories</legend>
+      @if (classCategoriesArray.invalid && !classCategoriesArray.touched) {
+        <p class="error-message">At least one category is required.</p>
       }
-    </div>
-    <button mat-raised-button color="primary" type="button" (click)="addYogaSpeciality()">Add Yoga Speciality</button>
-  </fieldset>
-
-  <!-- Class Categories -->
-  <fieldset>
-    <legend>Class Categories</legend>
-    @if (classCategoriesArray.invalid && !classCategoriesArray.touched) {
-      <p class="error-message">At least one category is required.</p>
-    }
-    <div formArrayName="category">
-      @for (categoryControl of classCategoriesArray.controls; let i = $index; track categoryControl) {
-        <fieldset [formGroupName]="i">
-          <legend>Category {{ i + 1 }}</legend>
-          <mat-form-field appearance="outline" class="small-width">
-            <mat-label>Class Category</mat-label>
-            <mat-select [formControl]="categoryControl">
-              @for (category of classCategories; track category) {
-                <mat-option [value]="category">{{ category }}</mat-option>
+      <div formArrayName="category">
+        @for (categoryControl of classCategoriesArray.controls; let i = $index; track categoryControl) {
+          <fieldset [formGroupName]="i">
+            <legend>Category {{ i + 1 }}</legend>
+            <mat-form-field appearance="outline" class="small-width">
+              <mat-label>Class Category</mat-label>
+              <mat-select [formControl]="categoryControl">
+                @for (category of classCategories; track category) {
+                  <mat-option [value]="category">{{ category }}</mat-option>
+                }
+              </mat-select>
+              @if (categoryControl?.hasError('required')) {
+                  <mat-error>Category is required</mat-error>
               }
-            </mat-select>
-            @if (categoryControl?.hasError('required')) {
-                <mat-error>Category is required</mat-error>
-            }
-          </mat-form-field>
-          <button mat-raised-button color="warn" type="button" (click)="removeClassCategory(i)">
-            Remove
-          </button>
-        </fieldset>
-      }
+            </mat-form-field>
+            <button mat-raised-button color="warn" type="button" (click)="removeClassCategory(i)">
+              Remove
+            </button>
+          </fieldset>
+        }
+      </div>
+      <button mat-raised-button color="primary" type="button" (click)="addClassCategory()">Add Class Category</button>
+    </fieldset>
+  
+    <!-- Submit Button -->
+    <div>
+      <button mat-raised-button color="accent" type="submit" [disabled]="createClassForm.invalid">Save</button>
     </div>
-    <button mat-raised-button color="primary" type="button" (click)="addClassCategory()">Add Class Category</button>
-  </fieldset>
+  </form>
+</div>
 
-  <!-- Submit Button -->
-  <div>
-    <button mat-raised-button color="accent" type="submit" [disabled]="createClassForm.invalid">Save</button>
-  </div>
-</form>

@@ -11,55 +11,83 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <!-- Left Nav Links -->
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
           <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/instructors" routerLinkActive="active">Instructors</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/classlocations" routerLinkActive="active">Class Locations</a>
+          <a class="nav-link" routerLink="/classlocations" routerLinkActive="active">Locations</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/classes" routerLinkActive="active">Classes</a>
         </li>
       </ul>
 
-      <!-- Right Login Section -->
-      <div class="navbar-login-section">
-        <ul class="navbar-nav">
+      <!-- Right Login/User Section -->
+      <ul class="navbar-nav navbar-login-section">
+        @if (isLoggedIn) {
+          <li class="nav-item">
+            <span class="nav-link">Welcome back, {{ currentUser?.name }}!</span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logout()">Logout</a>
+          </li>
 
-          @if (isLoggedIn) {
+          @if (isInstructor) {
             <li class="nav-item">
-              <span class="nav-link">Welcome back, {{ currentUser?.name }}!</span>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" (click)="logout()">Logout</a>
-            </li>
-
-            @if (isInstructor) {
-              <li class="nav-item">
-                <a class="nav-link" routerLink="/instructordashboard" routerLinkActive="active">Instructor Dashboard</a>
-              </li>
-            }
-
-            @if (isUser) {
-              <li class="nav-item">
-                <a class="nav-link" routerLink="/userdashboard" routerLinkActive="active">User Dashboard</a>
-              </li>
-            }
-
-          } @else {
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+              <a class="nav-link" routerLink="/instructordashboard" routerLinkActive="active">
+                Instructor Dashboard
+              </a>
             </li>
           }
 
-        </ul>
-      </div>
+          @if (isUser) {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/userdashboard" routerLinkActive="active">
+                User Dashboard
+              </a>
+            </li>
+          }
+
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+          </li>
+        }
+      </ul>
     </div>
   </div>
 </nav>
 
 <router-outlet></router-outlet>
+
+
+<!-- Footer -->
+<footer class="app-footer">
+  <div class="footer-container">
+    <div class="footer-section contact-info">
+      <h4>📍 Contact</h4>
+      <p>Begin Yoga LTD</p>
+      <p>Building 1, Sligo Retail Work</p>
+      <p>Ballintogher, Sligo</p>
+      <p>Email: <a href="mailto:BeginYogaSupport@gmail.com">BeginYogaSupport&#64;.com</a></p>
+      <p>Phone: (123) 456-7890</p>
+    </div>
+    <div class="footer-section quick-links">
+      <h4>🔗 Quick Links</h4>
+      <ul>
+        <li><a routerLink="/" routerLinkActive="active">Home</a></li>
+        <li><a routerLink="/instructors" routerLinkActive="active">Instructors</a></li>
+        <li><a routerLink="/classlocations" routerLinkActive="active">Locations</a></li>
+        <li><a routerLink="/classes" routerLinkActive="active">Classes</a></li>
+        <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2024 Begin Yoga LTD · All rights reserved
+  </div>
+</footer>

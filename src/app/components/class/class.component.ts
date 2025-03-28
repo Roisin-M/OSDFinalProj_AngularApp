@@ -12,6 +12,8 @@ import { User } from '../../interfaces/user';
 import { Instructor } from '../../interfaces/instructor';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthCustomService } from '../../services/authentication/auth-custom.service';
+import { ClassLocation } from '../../interfaces/class-location';
+import { ClassLocationsService } from '../../services/classLocations/class-locations.service';
 @Component({
   selector: 'app-class',
   standalone: true,
@@ -31,6 +33,7 @@ export class ClassComponent {
   //signals
   classes = signal<Class[]>([]);
   selectedSpecialities = signal<string[]>([]);
+  classLocations = signal<ClassLocation[]>([]);
 
   //computed signal for filtering
   filteredClasses= computed(() =>{
@@ -49,7 +52,8 @@ export class ClassComponent {
   //constructor with injection
   constructor(private classesService:ClassesService,
      private snackBar: MatSnackBar,
-      private authService: AuthCustomService
+      private authService: AuthCustomService,
+      private classLocationService: ClassLocationsService
   ){
     this.currentUser$ = this.authService.currentUser$;
     this.isAuthenticated$ = this.authService.isAuthenticated$;
@@ -77,13 +81,31 @@ export class ClassComponent {
           this.message = 'Failed to load classes.';
         },
       });
-  }
-  filterClasses(): void{
-    this.selectedSpecialities.set([...this.selectedSpecialities()]);
-  }
-  resetFilter(): void {
-    // this.selectedSpecialities = []; // Reset the selected filters
-    // this.filteredClasses = this.classes; // Show all classes
-    this.selectedSpecialities.set([]);
-  }
+      // Load class locations
+      this.classLocationService.getClassLocations().subscribe({
+        next: (locations) => this.classLocations.set(locations),
+        error: (err) => {
+          console.error(err);
+          this.message = 'Failed to load class locations.';
+        }
+      });
+    }
+  
+    getLocationName(id: string): string {
+      const matchName = this.classLocations().find(loc => loc._id === id);
+      return matchName ? matchName.name : 'Unknown location';
+    }
+  
+    getLocationAddress(id: string): string {
+      const matchAddress = this.classLocations().find(loc => loc._id === id);
+      return matchAddress ? matchAddress.location : 'Unknown';
+    }   
+    filterClasses(): void{
+      this.selectedSpecialities.set([...this.selectedSpecialities()]);
+    }
+    resetFilter(): void {
+      // this.selectedSpecialities = []; // Reset the selected filters
+      // this.filteredClasses = this.classes; // Show all classes
+      this.selectedSpecialities.set([]);
+    }
 }
