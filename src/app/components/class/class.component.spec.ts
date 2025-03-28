@@ -30,8 +30,8 @@ describe('ClassComponent - S00223865 - Roisin Muldoon', () => {
     await TestBed.configureTestingModule({
       imports: [
         ClassComponent,
-        HttpClientTestingModule,      // ✅ Provides mocked HttpClient
-        NoopAnimationsModule          // ✅ Prevents animation errors from Material
+        HttpClientTestingModule,     
+        NoopAnimationsModule         
       ]
     }).compileComponents();
 
