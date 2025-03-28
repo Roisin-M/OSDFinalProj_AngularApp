@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { InstructorComponent } from '../../components/instructor/instructor.component';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, map, Observable, retry, tap, throwError } from 'rxjs';
 import { Instructor } from '../../interfaces/instructor';
 import { environment } from '../../../environments/environment.development';
 import { Class } from '../../interfaces/class';
@@ -12,13 +12,23 @@ import { Class } from '../../interfaces/class';
 export class InstructorsService {
 
   private instructorUri = `${environment.apiUri}/instructors`
+  private apiGateway = `https://7ufxv1oio8.execute-api.eu-west-1.amazonaws.com/dev/instructors`
+
   constructor(private http: HttpClient) { }
 
-  //get all instructors method
+  //get all instructors method via lambda
   public getInstructors(): Observable<Instructor[]>{
     console.log('get instructors called');
-    return this.http.get<Instructor[]>(this.instructorUri)
+    console.log('[InstructorsService] Sending request to Lambda API:', this.apiGateway);
+    return this.http.get<any>(this.apiGateway)
     .pipe(
+       // mapping 
+      map(response => {
+        //console.log('Raw response from Lambda:', response);
+        const instructors = JSON.parse(response.body); 
+        //console.log('Parsed instructors:', instructors);
+        return instructors as Instructor[];
+      }),
       retry(3),
       catchError(this.handleError)
     );
@@ -34,6 +44,16 @@ export class InstructorsService {
       catchError(this.handleError)
     );
   }
+
+  // takes an id and sents a getrequest for the bookings count
+// getBookingCountForInstructor(instructorId: string): Observable<{ count: number }> {
+//   const uri = `${this.instructorUri}/${instructorId}/numbookings`;
+//   return this.http.get<{ count: number }>(uri).pipe(
+//     retry(3),
+//     catchError(this.handleError)
+//   );
+// }
+
   // takes an id and sends a request for that instructors classes associated
   getInstructorClasses(id: string): Observable<{ classes: Class[] }> {
     const uri = `${this.instructorUri}/${id}/classes`;
@@ -43,6 +63,16 @@ export class InstructorsService {
       catchError(this.handleError)
     );
   }
+  // takes an id and sends a get request for the bookings count
+getBookingCountForInstructor(instructorId: string): Observable<{ count: number }> {
+  const uri = `${this.instructorUri}/${instructorId}/numbookings`;
+  return this.http.get<{ count: number }>(uri).pipe(
+    tap(),
+    retry(3),
+    catchError(this.handleError)
+  );
+}
+
   
   //update instructor with id
   updateInstructor(id: string, instructor:Instructor):Observable<Instructor>{

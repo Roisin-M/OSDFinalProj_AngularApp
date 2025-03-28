@@ -8,7 +8,8 @@
       </mat-card-header>
       <mat-card-content>
         <p><strong>Email:</strong> {{ instructor.email }}</p>
-      </mat-card-content>
+        <p><strong>Total Bookings:</strong> {{ totalBookings }}</p>
+      </mat-card-content>      
       <mat-card-actions class="profile-actions">
         <a mat-flat-button color="primary" class="btn-space" [routerLink]="['/instructors', instructor._id]">
           View Profile

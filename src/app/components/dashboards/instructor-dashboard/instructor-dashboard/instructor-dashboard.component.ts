@@ -26,6 +26,7 @@ export class InstructorDashboardComponent {
   loading = true;
   showForm = false;
   successMessage = '';
+  totalBookings: number = 0;
 
   constructor(
     private authService: AuthCustomService,
@@ -39,6 +40,7 @@ export class InstructorDashboardComponent {
     const current = this.authService.currentUser$.value;
     if (current && current.role === 'instructor') {
       this.instructor = current;
+      //fetch classes
       this.instructorService.getInstructorClasses(current._id).subscribe({
         next: (response) => {
           this.classes = response.classes;
@@ -50,6 +52,17 @@ export class InstructorDashboardComponent {
           this.loading = false;
         }
       });
+      //fetch total bookings
+      this.instructorService.getBookingCountForInstructor(current._id)
+      .subscribe({
+        next: (res) => {
+          this.totalBookings = res.count;
+        },
+        error: (err) => {
+          console.error('Failed to fetch booking count:', err);
+        }
+      });
+      console.log(this.totalBookings);
     }
   }
 

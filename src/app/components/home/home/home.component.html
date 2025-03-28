@@ -1,5 +1,17 @@
-<div class="home-container">
+<div class="home-container" [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}">
   <div class="overlay">
-    <h1 class="title">Yoga Studio Management</h1>
+    <div class="content">
+      <h1 class="title">🧘 Yoga Studio Management</h1>
+
+      <div class="quote-box">
+        <p class="quote">“{{ quote }}”</p>
+        <p class="author">{{ author }}</p>
+      </div>
+
+      <div class="sanskrit-box">
+        <h3>📖 Sanskrit Word of the Day</h3>
+        <p>{{ sanskritWord }}</p>
+      </div>
+    </div>
   </div>
 </div>

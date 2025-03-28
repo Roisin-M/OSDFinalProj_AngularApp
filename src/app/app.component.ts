@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Observable } from 'rxjs';
 import { User } from './interfaces/user';
 import { Instructor } from './interfaces/instructor';
 import { AuthCustomService } from './services/authentication/auth-custom.service';
+
+declare let gtag: Function;
 
 @Component({
   selector: 'app-root',
@@ -25,7 +27,7 @@ export class AppComponent {
 
   constructor(
     private authService: AuthCustomService,
-    private router: Router
+    private router: Router,
   ) {
     this.currentUser$ = this.authService.currentUser$;
     this.isAuthenticated$ = this.authService.isAuthenticated$;
